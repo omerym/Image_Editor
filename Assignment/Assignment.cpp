@@ -4,13 +4,15 @@
 #include <iostream>
 
 using namespace std;
+
+unsigned char image[SIZE][SIZE];
+int loadImage();
 int main()
 {
 	// TODO: change welcome message
 	cout << "welcome message:\n";
 	cout << "Enter filename: ";
-	string filename;
-	cin >> filename;
+	while (loadImage());
 	bool running = true;
 	while (running)
 	{
@@ -30,7 +32,7 @@ int main()
 			<< "d-	Crop Image\n"
 			<< "e-	Skew Image Right\n"
 			<< "f-	Skew Image Up\n"
-			<< "s-      Save the image to a file\n"
+			<< "s-  Save the image to a file\n"
 			<< "0-	Exit\n";
 		char operation_code;
 		cin >> operation_code;
@@ -94,4 +96,16 @@ int main()
 		}
 	}
 	return 0;
+}
+
+int loadImage() {
+	char imageFileName[100];
+
+	// Get gray scale image file name
+	cout << "Enter the source image file name: ";
+	cin >> imageFileName;
+
+	// Add to it .bmp extension and load image
+	strcat(imageFileName, ".bmp");
+	return readGSBMP(imageFileName, image);
 }
