@@ -7,6 +7,7 @@ using namespace std;
 
 unsigned char image[SIZE][SIZE];
 int loadImage();
+void saveImage();
 int main()
 {
 	// TODO: change welcome message
@@ -87,7 +88,7 @@ int main()
 			cout << "Work in progress\n";
 			break;
 		case 's':
-			cout << "Work in progress\n";
+			saveImage();
 			break;
 
 		default:
@@ -108,4 +109,16 @@ int loadImage() {
 	// Add to it .bmp extension and load image
 	strcat(imageFileName, ".bmp");
 	return readGSBMP(imageFileName, image);
+}
+
+void saveImage() {
+	char imageFileName[100];
+
+	// Get gray scale image target file name
+	cout << "Enter the target image file name: ";
+	cin >> imageFileName;
+
+	// Add to it .bmp extension and load image
+	strcat(imageFileName, ".bmp");
+	writeGSBMP(imageFileName, image);
 }
