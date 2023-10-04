@@ -2,7 +2,6 @@
 #include <iostream>
 #include <string>
 #include <iostream>
-
 using namespace std;
 
 unsigned char image[SIZE][SIZE];
@@ -46,6 +45,7 @@ int main()
 			cout << "Work in progress\n";
 			break;
 		case '2':
+			// Test Bashar 
 			cout << "Work in progress\n";
 			break;
 		case '3':
