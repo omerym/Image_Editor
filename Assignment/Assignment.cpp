@@ -2,7 +2,8 @@
 #include <iostream>
 #include <string>
 #include <iostream>
-
+#include <stdio.h>
+#include <string.h>
 using namespace std;
 
 unsigned char image[SIZE][SIZE];
@@ -13,11 +14,7 @@ int main()
 	// TODO: change welcome message
 	cout << "welcome message:\n";
 	cout << "Enter filename: ";
-	while (loadImage());
-	bool running = true;
-	while (running)
-	{
-		cout << "Please select a filter to apply or 0 to exit:\n";
+	cout << "Please select a filter to apply or 0 to exit:\n";
 		cout << "1-	Black & White Filter\n"
 			<< "2-	Invert Filter\n"
 			<< "3-	Merge Filter\n"
@@ -35,6 +32,10 @@ int main()
 			<< "f-	Skew Image Up\n"
 			<< "s-  Save the image to a file\n"
 			<< "0-	Exit\n";
+	while (loadImage());
+	bool running = true;
+	while (running)
+	{
 		char operation_code;
 		cin >> operation_code;
 		switch (operation_code)
