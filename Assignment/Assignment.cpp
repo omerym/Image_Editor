@@ -10,7 +10,7 @@ unsigned char image[SIZE][SIZE];
 int loadImage();
 void saveImage();
 int merge();
-
+void rotate(int angle);
 int main()
 {
 	// TODO: change welcome message
@@ -58,7 +58,9 @@ int main()
 			cout << "Work in progress\n";
 			break;
 		case '5':
-			cout << "Work in progress\n";
+			int angle;
+			cin >> angle;
+			rotate(angle);
 			break;
 		case '6':
 			cout << "Work in progress\n";
@@ -146,4 +148,8 @@ int merge()
 		}
 	}
 	return 0;
+}
+void rotate(int angle)
+{
+
 }
