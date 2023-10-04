@@ -9,6 +9,8 @@ using namespace std;
 unsigned char image[SIZE][SIZE];
 int loadImage();
 void saveImage();
+int merge();
+
 int main()
 {
 	// TODO: change welcome message
@@ -50,7 +52,7 @@ int main()
 			cout << "Work in progress\n";
 			break;
 		case '3':
-			cout << "Work in progress\n";
+			while(merge());
 			break;
 		case '4':
 			cout << "Work in progress\n";
@@ -122,4 +124,26 @@ void saveImage() {
 	// Add to it .bmp extension and load image
 	strcat(imageFileName, ".bmp");
 	writeGSBMP(imageFileName, image);
+}
+int merge()
+{
+	char imageFileName[100];
+	// Get gray scale image file name to merge with
+	cout << "Enter the target image file name: ";
+	cin >> imageFileName;
+	strcat(imageFileName, ".bmp");
+	unsigned char other[SIZE][SIZE];
+	int readResult = readGSBMP(imageFileName, other);
+	if (readResult)
+	{
+		return readResult;
+	}
+	for (int i = 0; i < SIZE; i++)
+	{
+		for (int j = 0; j < SIZE; j++)
+		{
+			image[i][j] = ((int)image[i][j] + (int)other[i][j]) / 2;
+		}
+	}
+	return 0;
 }
