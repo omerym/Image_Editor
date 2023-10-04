@@ -10,6 +10,7 @@ unsigned char image[SIZE][SIZE];
 int loadImage();
 void saveImage();
 int merge();
+void multiply(float factor);
 
 int main()
 {
@@ -58,8 +59,14 @@ int main()
 			cout << "Work in progress\n";
 			break;
 		case '5':
-			cout << "Work in progress\n";
+		{
+			cout << "Do you want to (d)arken or (l)ighten?\n";
+			char input;
+			cin >> input;
+			float factor = input == 'd' ? 0.5 : input == 'l' ? 1.5 : 0;
+			multiply(factor);
 			break;
+		}
 		case '6':
 			cout << "Work in progress\n";
 			break;
@@ -146,4 +153,17 @@ int merge()
 		}
 	}
 	return 0;
+}
+
+void multiply(float factor)
+{
+	for (int i = 0; i < SIZE; i++)
+	{
+		for (int j = 0; j < SIZE; j++)
+		{
+			float pixel = (float)image[i][j] * factor;
+			pixel = pixel > 255 ? 255 : pixel;
+			image[i][j] = pixel;
+		}
+	}
 }
