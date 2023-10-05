@@ -50,7 +50,9 @@ int main()
 			running = false;
 			break;
 		case '1':
-			cout << "Work in progress\n";
+			cout << "Black and White filter applied\n";
+			void Black_White_Filter();
+			Black_White_Filter();
 			break;
 		case '2':
 			invert();
@@ -333,6 +335,22 @@ void Crop_Image(){
 			else
 			{
 			   image[i][j]=255;
+			}
+		}
+	}
+}
+void Black_White_Filter(){
+	for(int i =0;i<SIZE;i++)
+	{
+		for(int j=0;j<SIZE;j++)
+		{
+			if(image[i][j]<127)
+			{
+				image[i][j]=0;
+			}
+			else
+			{
+				image[i][j]=255;
 			}
 		}
 	}
