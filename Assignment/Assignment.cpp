@@ -101,7 +101,9 @@ int main()
 			cout << "Work in progress\n";
 			break;
 		case 'd':
-			cout << "Work in progress\n";
+			cout << "Please enter x y l w:\n";
+			void Crop_Image();
+			Crop_Image();
 			break;
 		case 'e':
 			cout << "Work in progress\n";
@@ -318,4 +320,20 @@ void Flip_Image(){
 		 break;
 	}
 }
-
+void Crop_Image(){
+	int X,Y,L,W;
+	cin>>X>>Y>>L>>W;
+	for(int i =0;i<SIZE;i++)
+	{
+		for(int j=0;j<SIZE;j++)
+		{
+			if(X<=i&&i<=L&&Y<=j&&j<=W){
+				;
+			}
+			else
+			{
+			   image[i][j]=255;
+			}
+		}
+	}
+}
