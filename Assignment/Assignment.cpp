@@ -12,6 +12,7 @@ void saveImage();
 int merge();
 void multiply(float factor);
 void invert();
+void shrink(int factor);
 int main()
 {
 	cout << "welcome,\n";
@@ -79,8 +80,13 @@ int main()
 			cout << "Work in progress\n";
 			break;
 		case '9':
-			cout << "Work in progress\n";
+		{
+			cout << "Enter shrink factor.(2,3,4...):  ";
+			int factor;
+			cin >> factor;
+			shrink(factor);
 			break;
+		}
 		case 'a':
 			cout << "Work in progress\n";
 			break;
@@ -186,6 +192,31 @@ void invert()
 		for (int j = 0; j < SIZE; j++)
 		{
 			image[i][j] = 255-image[i][j];
+		}
+	}
+}
+
+//Shrink image:
+void shrink(int factor)
+{
+	// Draw shrunk image on top left corner
+	for (int i = 0; i * factor < SIZE; i++)
+	{
+		for (int j = 0; j * factor < SIZE; j++)
+		{
+			image[i][j] = image[i * factor][j * factor];
+		}
+	}
+
+	// Set pixeles outside image boundries to white.
+	for (int i = 0; i < SIZE; i++)
+	{
+		for (int j = 0; j < SIZE; j++)
+		{
+			if (i * factor >= SIZE || j * factor >= SIZE) 
+			{
+				image[i][j] = 255;
+			}
 		}
 	}
 }
