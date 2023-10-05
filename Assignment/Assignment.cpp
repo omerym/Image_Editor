@@ -50,9 +50,7 @@ int main()
 			running = false;
 			break;
 		case '1':
-			void Mirror_Image();
-			cout<<"Mirror (l)eft, (r)ight, (u)pper, (d)own side?\n";
-			Mirror_Image();
+			cout << "Work in progress\n";
 			break;
 		case '2':
 			invert();
@@ -90,7 +88,9 @@ int main()
 			break;
 		}
 		case 'a':
-			cout << "Work in progress\n";
+			void Mirror_Image();
+			cout<<"Mirror (l)eft, (r)ight, (u)pper, (d)own side?\n";
+			Mirror_Image();
 			break;
 		case 'b':
 			cout << "Work in progress\n";
