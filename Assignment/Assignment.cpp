@@ -50,7 +50,9 @@ int main()
 			running = false;
 			break;
 		case '1':
-			cout << "Work in progress\n";
+			void Mirror_Image();
+			cout<<"Mirror (l)eft, (r)ight, (u)pper, (d)own side?\n";
+			Mirror_Image();
 			break;
 		case '2':
 			invert();
@@ -220,3 +222,57 @@ void shrink(int factor)
 		}
 	}
 }
+void Mirror_Image()
+{
+	char Mirror_input;
+	int Switch_Var1;
+	int Switch_Var2;
+	cin>>Mirror_input;
+	switch(Mirror_input){
+		case 'r':
+		  for(int i=0;i<SIZE;i++)
+		  {
+		    for (int j = 0; j < SIZE; j++)
+			{
+				image[i][j]=image[i][SIZE-j];
+			}
+		  }
+		  cout<<"Effect Applied Successfully\n";
+		  break;
+		case 'd':
+		  for(int i=0;i<SIZE;i++)
+		  {
+		    for (int j = 0; j < SIZE; j++)
+			{
+				image[i][j]=image[SIZE-i][j];
+			}
+		  }
+		  cout<<"Effect Applied Successfully\n";
+		    break;
+		case 'l':
+		for(int i=0;i<SIZE;i++)
+		  {
+		    for (int j = 0; j < SIZE; j++)
+			{
+				image[i][SIZE-j]=image[i][j];
+			}
+		  }
+		  cout<<"Effect Applied Successfully\n";
+		    break;
+		case 'u':
+		for(int i=0;i<SIZE;i++)
+		  {
+		    for (int j = 0; j < SIZE; j++)
+			{
+				image[SIZE-i][j]=image[i][j];
+			}
+		  }
+		  cout<<"Effect Applied Successfully\n";
+		    break;
+		default:
+		 cout<<"Invalid Input\n";
+		    break;
+	}
+}
+
+
