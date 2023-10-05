@@ -14,9 +14,9 @@ void multiply(float factor);
 void invert();
 int main()
 {
-	// TODO: change welcome message
-	cout << "welcome message:\n";
+	cout << "welcome,\n";
 	cout << "Enter filename: ";
+	// get filename from user and load it, if file does not exist try again.
 	while (loadImage());
 	bool running = true;
 	while (running)
@@ -39,11 +39,13 @@ int main()
 			<< "f-	Skew Image Up\n"
 			<< "s-  Save the image to a file\n"
 			<< "0-	Exit\n";
+		// get operation code
 		char operation_code;
 		cin >> operation_code;
 		switch (operation_code)
 		{
 		case '0':
+			//exit the loop
 			running = false;
 			break;
 		case '1':
@@ -100,7 +102,7 @@ int main()
 		case 's':
 			saveImage();
 			break;
-
+		// if operation code does not match any defined operation 
 		default:
 			cout << "Invalid input!\n";
 			break;
@@ -108,7 +110,7 @@ int main()
 	}
 	return 0;
 }
-
+// load image from file
 int loadImage() {
 	char imageFileName[100];
 
@@ -121,6 +123,7 @@ int loadImage() {
 	return readGSBMP(imageFileName, image);
 }
 
+// save image to file
 void saveImage() {
 	char imageFileName[100];
 
@@ -132,6 +135,8 @@ void saveImage() {
 	strcat(imageFileName, ".bmp");
 	writeGSBMP(imageFileName, image);
 }
+
+// load image and merge it with current image
 int merge()
 {
 	char imageFileName[100];
@@ -141,20 +146,24 @@ int merge()
 	strcat(imageFileName, ".bmp");
 	unsigned char other[SIZE][SIZE];
 	int readResult = readGSBMP(imageFileName, other);
+	// if readGSBMP was not successfull
 	if (readResult)
 	{
 		return readResult;
 	}
+	// merge the two images
 	for (int i = 0; i < SIZE; i++)
 	{
 		for (int j = 0; j < SIZE; j++)
 		{
+			// average pixels of the images
 			image[i][j] = ((int)image[i][j] + (int)other[i][j]) / 2;
 		}
 	}
 	return 0;
 }
 
+// multiply all pixels with a factor for darkening and lightening
 void multiply(float factor)
 {
 	for (int i = 0; i < SIZE; i++)
@@ -162,11 +171,14 @@ void multiply(float factor)
 		for (int j = 0; j < SIZE; j++)
 		{
 			float pixel = (float)image[i][j] * factor;
+			// limit pixel value to 255
 			pixel = pixel > 255 ? 255 : pixel;
 			image[i][j] = pixel;
 		}
 	}
 }
+
+// Invert all image pixels
 void invert()
 {
 	for (int i = 0; i < SIZE; i++)
