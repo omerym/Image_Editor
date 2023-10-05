@@ -11,7 +11,7 @@ int loadImage();
 void saveImage();
 int merge();
 void multiply(float factor);
-int invertImage();
+void invert();
 int main()
 {
 	// TODO: change welcome message
@@ -50,7 +50,7 @@ int main()
 			cout << "Work in progress\n";
 			break;
 		case '2':
-			cout << "Work in progress\n";
+			invert();
 			break;
 		case '3':
 			while(merge());
@@ -167,7 +167,7 @@ void multiply(float factor)
 		}
 	}
 }
-int invertImage()
+void invert()
 {
 	for (int i = 0; i < SIZE; i++)
 	{
@@ -176,5 +176,4 @@ int invertImage()
 			image[i][j] = 255-image[i][j];
 		}
 	}
-	return 0;
 }
