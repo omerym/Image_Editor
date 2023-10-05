@@ -4,6 +4,8 @@
 #include <iostream>
 #include <stdio.h>
 #include <string.h>
+#include <cmath>
+#include <math.h>
 using namespace std;
 
 unsigned char image[SIZE][SIZE];
@@ -78,7 +80,9 @@ int main()
 			cout << "Work in progress\n";
 			break;
 		case '7':
-			cout << "Work in progress\n";
+			cout << "Detect Image Edges applied\n";
+			void Detect_Image_Edges();
+			Detect_Image_Edges();
 			break;
 		case '8':
 			cout << "Work in progress\n";
@@ -352,6 +356,36 @@ void Black_White_Filter(){
 			{
 				image[i][j]=255;
 			}
+		}
+	}
+}
+void Detect_Image_Edges(){
+	int changeH;
+	int changeV;
+	int Grad;
+	int image2[SIZE][SIZE];
+	for(int j =2;j<=SIZE;j++)
+	{
+		for(int i=2;i<=SIZE-2;i++)
+		{
+			
+			changeH=
+			-1*image[i-1][j+1]-2*image[i-1][j]-1*image[i-1][j-1]
+			+0*image[i][j-1]+0*image[i][j]+0*image[i][j+1]
+			+1*image[i+1][j-1]+2*image[i+1][j]+1*image[i+1][j+1];
+			changeV=
+			+1*image[i-1][j+1]+0*image[i-1][j]-1*image[i-1][j-1]
+			-2*image[i][j-1]+0*image[i][j]+2*image[i][j+1]
+			-1*image[i+1][j-1]+0*image[i+1][j]+1*image[i+1][j+1];
+			Grad=sqrt(pow(changeH,2)+pow(changeV,2));
+			image2[i][j]=255-Grad;
+		}
+	}
+	for(int j =0;j<SIZE;j++)
+	{
+		for(int i=0;i<SIZE;i++)
+		{
+			image[i][j]=image2[i][j];
 		}
 	}
 }
