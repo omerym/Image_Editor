@@ -11,7 +11,7 @@ int loadImage();
 void saveImage();
 int merge();
 void multiply(float factor);
-
+int invertImage();
 int main()
 {
 	// TODO: change welcome message
@@ -166,4 +166,15 @@ void multiply(float factor)
 			image[i][j] = pixel;
 		}
 	}
+}
+int invertImage()
+{
+	for (int i = 0; i < SIZE; i++)
+	{
+		for (int j = 0; j < SIZE; j++)
+		{
+			image[i][j] = 255-image[i][j];
+		}
+	}
+	return 0;
 }
