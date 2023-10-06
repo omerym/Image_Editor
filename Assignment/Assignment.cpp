@@ -15,6 +15,7 @@ int merge();
 void multiply(float factor);
 void invert();
 void shrink(int factor);
+void rotateImage();
 int main()
 {
 	cout << "welcome,\n";
@@ -77,7 +78,9 @@ int main()
 			break;
 		}
 		case '6':
-			cout << "Work in progress\n";
+			cout << "rotate (w)270deg or  or (x)90deg or (y)180deg\n";
+			void rotateImage();
+			rotateImage();
 			break;
 		case '7':
 			cout << "Detect Image Edges applied\n";
@@ -387,5 +390,63 @@ void Detect_Image_Edges(){
 		{
 			image[i][j]=image2[i][j];
 		}
+	}
+}
+//rotateImage
+void rotateImage(){
+	char rotareInput;
+	unsigned char image2[SIZE][SIZE];
+	cin>>rotareInput;
+	switch(rotareInput){
+		case 'w':
+		for(int i=0;i<SIZE;i++)
+		{
+			for(int j=0;j<SIZE;j++)
+			{
+            image2[i][j]=image[i][SIZE-j];
+			}
+		}
+		for(int i=0;i<SIZE;i++)
+		{
+			for(int j=0;j<SIZE;j++)
+			{
+            image[i][j]=image2[SIZE-i][j];
+			}
+		}
+		break;
+		case 'x':
+		for(int i=0;i<SIZE;i++)
+		{
+			for(int j=0;j<SIZE;j++)
+			{
+            image2[i][j]=image[SIZE-j][i];
+			}
+		}
+		for(int i=0;i<SIZE;i++)
+		{
+			for(int j=0;j<SIZE;j++)
+			{
+            image[i][j]=image2[i][j];
+			}
+		}
+		break;
+		case'y':
+		for(int i = 0;i<SIZE;i++)
+		{
+			for(int j=0;j<SIZE;j++)
+			{
+            image2[i][j]=image[i][j];
+			}
+		}
+		for(int i=0;i<SIZE;i++)
+		{
+			for(int j=0;j<SIZE;j++)
+			{
+            image[SIZE-i][SIZE-j]=image2[i][j];
+			}
+		}
+		default:
+		cout<<"invalid input\n";
+		break;
 	}
 }

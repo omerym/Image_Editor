@@ -17,7 +17,7 @@ unsigned char image[SIZE][SIZE];
 
 void loadImage ();
 void saveImage ();
-void doSomethingForImage ();
+void Flip_Image ();
 
 int main()
 {
@@ -54,20 +54,45 @@ void saveImage () {
 }
 
 //_________________________________________
-void doSomethingForImage() {
-  for (int i = 0; i < SIZE; i++) {
-    for (int j = 0; j< SIZE; j++) {
-
-/* Example code to convert to BW the image
-   A better version should NOt use 127 but the
-   average of the pixels
-
-        if (image[i][j] > 127)
-            image[i][j] = 255;
-        else
-            image[i][j] = 0;
-*/
-// do something with the image
-    }
-  }
+void Flip_Image(){
+	char Flip_Image_Input;
+	unsigned char image2[SIZE][SIZE];
+	cin>>Flip_Image_Input;
+	switch(Flip_Image_Input){
+		case 'h':
+		for(int i=0;i<SIZE;i++)
+		  {
+			for(int j=0;j<SIZE;j++)
+			{
+             image2[i][j]=image[i][SIZE-j];
+			}
+		  }
+		 for(int i=0;i<SIZE;i++)
+		  {
+			for(int j=0;j<SIZE;j++)
+			{
+             image[i][j]=image2[i][j];
+			}
+		  }
+		 break;
+		case 'v':
+		for(int i=0;i<SIZE;i++)
+		  {
+			for(int j=0;j<SIZE;j++)
+			{
+             image2[i][j]=image[SIZE-i][j];
+			}
+		  }
+		 for(int i=0;i<SIZE;i++)
+		  {
+			for(int j=0;j<SIZE;j++)
+			{
+             image[i][j]=image2[i][j];
+			}
+		  }
+		 break;
+		default:
+		 cout<<"invalid input\n";
+		 break;
+	}
 }
