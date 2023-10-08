@@ -88,8 +88,8 @@ int main()
 			Detect_Image_Edges();
 			break;
 		case '8':
-			void Enlarge_Image();
-			Enlarge_Image();
+			void enlargeImage();
+			enlargeImage();
 			cout << "Filter Applied\n";
 			break;
 		case '9':
@@ -452,7 +452,8 @@ void rotateImage(){
 		break;
 	}
 }
-void Enlarge_Image(){
+//enlargeImage
+void enlargeImage(){
 int image2[SIZE][SIZE];
 int N=SIZE/2;
 char input;
@@ -460,91 +461,102 @@ cout<<"please enter quarter to enlarge\n";
 cin>>input;
 switch(input)
 {
-  case '1':
-  for (int i =0;i<N;i++)
- {
-	for(int j=0;j<N;j++)
+    case'1':
+		for (int i =0;i<N;i++)
+		{
+			for(int j=0;j<N;j++)
+			{
+				image2[i][j]=image[i][j];
+			}
+		}
+		for(int i=0;i<=SIZE/2;i++)
+		{
+			for(int j=0;j<=SIZE/2;j++)
+			{ 
+				int i2=i*2;
+				int j2=j*2;
+				image[i2][j2]=image2[i][j];
+
+				image[i2+1][j2]=image2[i][j];
+
+				image[i2][j2+1]=image2[i][j];
+
+				image[i2+1][j2+1]=image2[i][j];
+			}
+		}
+    break;
+    case '2': 
+		for (int i =0;i<SIZE;i++){
+		for(int j=0;j<N;j++){
+
+			image2[i][j]=image[i][j+N];
+		}
+	}
+		for(int i=0;i<=SIZE/2;i++)
 	{
-		image2[i][j]=image[i][j];
+		for(int j=0;j<=SIZE/2;j++)
+		{ 
+			int i2=i*2;
+			int j2=j*2;
+			image[i2][j2]=image2[i][j];
+
+			image[i2+1][j2]=image2[i][j];
+
+			image[i2][j2+1]=image2[i][j];
+
+			image[i2+1][j2+1]=image2[i][j];
+		}
 	}
- }
-for(int i=0;i<=SIZE/2;i++)
- {
-	for(int j=0;j<=SIZE/2;j++)
-	{ 
-		int i2=i*2;
-		int j2=j*2;
-		image[i2][j2]=image2[i][j];
-		image[i2+1][j2]=image2[i][j];
-		image[i2][j2+1]=image2[i][j];
-		image[i2+1][j2+1]=image2[i][j];
-	}
- }
-   break;
-  case '2': 
-   for (int i =0;i<SIZE;i++)
- {
-	for(int j=0;j<N;j++)
+	break;
+	case '3':
+	for (int i =0;i<N;i++)
 	{
-		image2[i][j]=image[i][j+N];
+		for(int j=0;j<SIZE;j++)
+		{
+			image2[i][j]=image[i+N][j];
+		}
 	}
- }
-for(int i=0;i<=SIZE/2;i++)
- {
-	for(int j=0;j<=SIZE/2;j++)
-	{ 
-		int i2=i*2;
-		int j2=j*2;
-		image[i2][j2]=image2[i][j];
-		image[i2+1][j2]=image2[i][j];
-		image[i2][j2+1]=image2[i][j];
-		image[i2+1][j2+1]=image2[i][j];
-	}
- }
-   break;
-  case '3':
-  for (int i =0;i<N;i++)
- {
-	for(int j=0;j<SIZE;j++)
+	for(int i=0;i<=SIZE/2;i++)
 	{
-		image2[i][j]=image[i+N][j];
+		for(int j=0;j<=SIZE/2;j++)
+		{ 
+			int i2=i*2;
+			int j2=j*2;
+			image[i2][j2]=image2[i][j];
+
+			image[i2+1][j2]=image2[i][j];
+
+			image[i2][j2+1]=image2[i][j];
+
+			image[i2+1][j2+1]=image2[i][j];
+		}
 	}
- }
-for(int i=0;i<=SIZE/2;i++)
- {
-	for(int j=0;j<=SIZE/2;j++)
-	{ 
-		int i2=i*2;
-		int j2=j*2;
-		image[i2][j2]=image2[i][j];
-		image[i2+1][j2]=image2[i][j];
-		image[i2][j2+1]=image2[i][j];
-		image[i2+1][j2+1]=image2[i][j];
-	}
- }
-   break;
-  case '4':
-  for (int i =0;i<SIZE;i++)
- {
-	for(int j=0;j<SIZE;j++)
-	{
-		image2[i][j]=image[i+N][j+N];
-	}
- }
-for(int i=0;i<=SIZE/2;i++)
- {
-	for(int j=0;j<=SIZE/2;j++)
-	{ 
-		int i2=i*2;
-		int j2=j*2;
-		image[i2][j2]=image2[i][j];
-		image[i2+1][j2]=image2[i][j];
-		image[i2][j2+1]=image2[i][j];
-		image[i2+1][j2+1]=image2[i][j];
-	}
- }
-   break;
-   default: 
+break;
+case '4':
+		for (int i =0;i<SIZE;i++){
+
+		for(int j=0;j<SIZE;j++)
+		{
+			image2[i][j]=image[i+N][j+N];
+		}
+		}
+		for(int i=0;i<=SIZE/2;i++){
+
+		for(int j=0;j<=SIZE/2;j++)
+		{ 
+			int i2=i*2;
+			int j2=j*2;
+			image[i2][j2]=image2[i][j];
+
+			image[i2+1][j2]=image2[i][j];
+
+			image[i2][j2+1]=image2[i][j];
+
+			image[i2+1][j2+1]=image2[i][j];
+		}
+		}
+break;
+default: 
     cout<<"invalid input\n";
 	break;
 }
