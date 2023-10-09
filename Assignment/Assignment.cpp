@@ -1,12 +1,17 @@
 ﻿#include <iostream>
 #include <string>
+#include <cmath>
 #include "bmplib.cpp"
 using namespace std;
 class Image
 {
+	void skewUp(float degree);
+	void skewRight(float degree);
 public:
 	unsigned char image[SIZE][SIZE];
 	void merge(unsigned char other[SIZE][SIZE]);
+	void copyTo(unsigned char other[SIZE][SIZE]);
+	void copyFrom(unsigned char other[SIZE][SIZE]);
 	void multiply(float factor);
 	void invert();
 	void shrink(int factor);
@@ -18,10 +23,12 @@ public:
 	void rotate();
 	void enlarge();
 	int getAvarage();
+	void skew(bool isVertical, float degree);
+	void trasform(float inverseTransformation[2][2]);
 };
 
-int load(unsigned char inputImage[][SIZE]);
-void save(unsigned char inputImage[][SIZE]);
+int load(unsigned char image[][SIZE]);
+void save(unsigned char image[][SIZE]);
 int main()
 {
 	Image image;
@@ -119,11 +126,21 @@ int main()
 			image.crop();
 			break;
 		case 'e':
-			cout << "Work in progress\n";
+		{
+			cout << "Please enter degree to skew right:";
+			float deg;
+			cin >> deg;
+			image.skew(false,deg);
 			break;
+		}
 		case 'f':
-			cout << "Work in progress\n";
+		{
+			cout << "Please enter degree to skew up:";
+			float deg;
+			cin >> deg;
+			image.skew(true, deg);
 			break;
+		}
 		case 's':
 			save(image.image);
 			break;
@@ -167,8 +184,6 @@ void save(unsigned char image[][SIZE]) {
 }
 
 
-
-
 // load image and merge it with current image
 void Image::merge(unsigned char other[SIZE][SIZE])
 {
@@ -179,6 +194,28 @@ void Image::merge(unsigned char other[SIZE][SIZE])
 		{
 			// average pixels of the images
 			image[i][j] = ((int)image[i][j] + (int)other[i][j]) / 2;
+		}
+	}
+}
+
+void Image::copyTo(unsigned char other[SIZE][SIZE])
+{
+	for (int i = 0; i < SIZE; i++)
+	{
+		for (int j = 0; j < SIZE; j++)
+		{
+			other[i][j] = image[i][j];
+		}
+	}
+}
+
+void Image::copyFrom(unsigned char other[SIZE][SIZE])
+{
+	for (int i = 0; i < SIZE; i++)
+	{
+		for (int j = 0; j < SIZE; j++)
+		{
+			image[i][j] = other[i][j];
 		}
 	}
 }
@@ -571,4 +608,56 @@ int Image::getAvarage()
 		}
 	}
 	return sum / SIZE / SIZE;
+}
+void Image::skew(bool isUp,float degree)
+{
+	if (isUp)
+	{
+		skewUp(degree);
+	}
+	else
+	{
+		skewRight(degree);
+	}
+}
+
+void Image::skewUp(float degree)
+{
+	float arr[2][2] = {{ 1,tan(degree)},
+						{0,1} };
+	trasform(arr);
+}
+void Image::skewRight(float degree)
+{
+	float arr[2][2] = { { 1,0},
+						{tan(degree),1} };
+	trasform(arr);
+}
+
+void Image::trasform(float inverseTransformation[2][2])
+{
+	int mid = SIZE / 2;
+	unsigned char t[SIZE][SIZE];
+	copyTo(t);
+	for (int i = -mid; i < mid; i++)
+	{
+		for (int j = -mid; j < mid; j++)
+		{
+			// transformed coordinates
+			int it = inverseTransformation[0][0] * i + inverseTransformation[0][1] * j + mid;
+			int jt = inverseTransformation[1][0] * i + inverseTransformation[1][1] * j + mid;
+			// if coordinates are valid
+			bool is_iValid = it >= 0 && it < SIZE;
+			bool is_jValid = jt >= 0 && jt < SIZE;
+			if (is_iValid && is_jValid)
+			{
+				image[i + mid][j + mid] = t[it][jt];
+			}
+			//coordinates outside image boundries
+			else
+			{
+				image[i + mid][j + mid] = SIZE - 1;
+			}
+		}
+	}
 }
