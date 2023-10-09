@@ -1,34 +1,34 @@
-﻿#include "bmplib.cpp"
-#include <iostream>
+﻿#include <iostream>
 #include <string>
-#include <iostream>
-#include <stdio.h>
-#include <string.h>
-#include <cmath>
-#include <math.h>
+#include "bmplib.cpp"
 using namespace std;
+class Image
+{
+public:
+	unsigned char image[SIZE][SIZE];
+	void merge(unsigned char other[SIZE][SIZE]);
+	void multiply(float factor);
+	void invert();
+	void shrink(int factor);
+	void mirror();
+	void flip();
+	void crop();
+	void toBlackWhite();
+	void detectEdges();
+	void rotate();
+	void enlarge();
+	int getAvarage();
+};
 
-unsigned char image[SIZE][SIZE];
-int load();
-void save();
-int merge();
-void multiply(float factor);
-void invert();
-void shrink(int factor);
-void mirror();
-void flip();
-void crop();
-void toBlackWhite();
-void detectEdges();
-void rotate();
-void enlarge();
-
+int load(unsigned char inputImage[][SIZE]);
+void save(unsigned char inputImage[][SIZE]);
 int main()
 {
+	Image image;
 	cout << "welcome,\n";
 	cout << "Enter filename: ";
 	// get filename from user and load it, if file does not exist try again.
-	while (load());
+	while (load(image.image));
 	bool running = true;
 	while (running)
 	{
@@ -61,19 +61,19 @@ int main()
 			break;
 		case '1':
 			cout << "Black and White filter applied\n";
-			void toBlackWhite();
-			toBlackWhite();
+			image.toBlackWhite();
 			break;
 		case '2':
-			invert();
+			image.invert();
 			break;
 		case '3':
-			while(merge());
+			unsigned char other[SIZE][SIZE];
+			while (load(other));
+			image.merge(other);
 			break;
 		case '4':
 			cout<<"Flip (h)orizontally or (v)ertically ?\n";
-			void flip();
-			flip();
+			image.flip();
 			break;
 		case '5':
 		{
@@ -81,22 +81,19 @@ int main()
 			char input;
 			cin >> input;
 			float factor = input == 'd' ? 0.5 : input == 'l' ? 1.5 : 0;
-			multiply(factor);
+			image.multiply(factor);
 			break;
 		}
 		case '6':
 			cout << "rotate (w)270deg or  or (x)90deg or (y)180deg\n";
-			void rotate();
-			rotate();
+			image.rotate();
 			break;
 		case '7':
 			cout << "Detect Image Edges applied\n";
-			void detectEdges();
-			detectEdges();
+			image.detectEdges();
 			break;
 		case '8':
-			void enlarge();
-			enlarge();
+			image.enlarge();
 			cout << "Filter Applied\n";
 			break;
 		case '9':
@@ -104,13 +101,12 @@ int main()
 			cout << "Enter shrink factor.(2,3,4...):  ";
 			int factor;
 			cin >> factor;
-			shrink(factor);
+			image.shrink(factor);
 			break;
 		}
 		case 'a':
-			void mirror();
 			cout<<"Mirror (l)eft, (r)ight, (u)pper, (d)own side?\n";
-			mirror();
+			image.mirror();
 			break;
 		case 'b':
 			cout << "Work in progress\n";
@@ -120,8 +116,7 @@ int main()
 			break;
 		case 'd':
 			cout << "Please enter x y l w:\n";
-			void crop();
-			crop();
+			image.crop();
 			break;
 		case 'e':
 			cout << "Work in progress\n";
@@ -130,7 +125,7 @@ int main()
 			cout << "Work in progress\n";
 			break;
 		case 's':
-			save();
+			save(image.image);
 			break;
 		// if operation code does not match any defined operation 
 		default:
@@ -140,8 +135,13 @@ int main()
 	}
 	return 0;
 }
+
+
+
+
+
 // load image from file
-int load() {
+int load(unsigned char image[][SIZE]) {
 	char imageFileName[100];
 
 	// Get gray scale image file name
@@ -154,7 +154,7 @@ int load() {
 }
 
 // save image to file
-void save() {
+void save(unsigned char image[][SIZE]) {
 	char imageFileName[100];
 
 	// Get gray scale image target file name
@@ -166,21 +166,12 @@ void save() {
 	writeGSBMP(imageFileName, image);
 }
 
+
+
+
 // load image and merge it with current image
-int merge()
+void Image::merge(unsigned char other[SIZE][SIZE])
 {
-	char imageFileName[100];
-	// Get gray scale image file name to merge with
-	cout << "Enter the target image file name: ";
-	cin >> imageFileName;
-	strcat(imageFileName, ".bmp");
-	unsigned char other[SIZE][SIZE];
-	int readResult = readGSBMP(imageFileName, other);
-	// if readGSBMP was not successfull
-	if (readResult)
-	{
-		return readResult;
-	}
 	// merge the two images
 	for (int i = 0; i < SIZE; i++)
 	{
@@ -190,11 +181,10 @@ int merge()
 			image[i][j] = ((int)image[i][j] + (int)other[i][j]) / 2;
 		}
 	}
-	return 0;
 }
 
 // multiply all pixels with a factor for darkening and lightening
-void multiply(float factor)
+void Image::multiply(float factor)
 {
 	for (int i = 0; i < SIZE; i++)
 	{
@@ -209,19 +199,19 @@ void multiply(float factor)
 }
 
 // Invert all image pixels
-void invert()
+void Image::invert()
 {
 	for (int i = 0; i < SIZE; i++)
 	{
 		for (int j = 0; j < SIZE; j++)
 		{
-			image[i][j] = 255-image[i][j];
+			image[i][j] = 255 - image[i][j];
 		}
 	}
 }
 
 //Shrink image:
-void shrink(int factor)
+void Image::shrink(int factor)
 {
 	// Draw shrunk image on top left corner
 	for (int i = 0; i * factor < SIZE; i++)
@@ -237,334 +227,348 @@ void shrink(int factor)
 	{
 		for (int j = 0; j < SIZE; j++)
 		{
-			if (i * factor >= SIZE || j * factor >= SIZE) 
+			if (i * factor >= SIZE || j * factor >= SIZE)
 			{
 				image[i][j] = 255;
 			}
 		}
 	}
 }
-void mirror()
+void Image::mirror()
 {
 	char Mirror_input;
 	int Switch_Var1;
 	int Switch_Var2;
-	cin>>Mirror_input;
-	switch(Mirror_input){
-		case 'r':
-		  for(int i=0;i<SIZE;i++)
-		  {
-		    for (int j = 0; j < SIZE; j++)
+	cin >> Mirror_input;
+	switch (Mirror_input) {
+	case 'r':
+		for (int i = 0; i < SIZE; i++)
+		{
+			for (int j = 0; j < SIZE; j++)
 			{
-				image[i][j]=image[i][SIZE-j];
+				image[i][j] = image[i][SIZE - j];
 			}
-		  }
-		  cout<<"Effect Applied Successfully\n";
-		  break;
-		case 'd':
-		  for(int i=0;i<SIZE;i++)
-		  {
-		    for (int j = 0; j < SIZE; j++)
+		}
+		cout << "Effect Applied Successfully\n";
+		break;
+	case 'd':
+		for (int i = 0; i < SIZE; i++)
+		{
+			for (int j = 0; j < SIZE; j++)
 			{
-				image[i][j]=image[SIZE-i][j];
+				image[i][j] = image[SIZE - i][j];
 			}
-		  }
-		  cout<<"Effect Applied Successfully\n";
-		    break;
-		case 'l':
-		for(int i=0;i<SIZE;i++)
-		  {
-		    for (int j = 0; j < SIZE; j++)
+		}
+		cout << "Effect Applied Successfully\n";
+		break;
+	case 'l':
+		for (int i = 0; i < SIZE; i++)
+		{
+			for (int j = 0; j < SIZE; j++)
 			{
-				image[i][SIZE-j]=image[i][j];
+				image[i][SIZE - j] = image[i][j];
 			}
-		  }
-		  cout<<"Effect Applied Successfully\n";
-		    break;
-		case 'u':
-		for(int i=0;i<SIZE;i++)
-		  {
-		    for (int j = 0; j < SIZE; j++)
+		}
+		cout << "Effect Applied Successfully\n";
+		break;
+	case 'u':
+		for (int i = 0; i < SIZE; i++)
+		{
+			for (int j = 0; j < SIZE; j++)
 			{
-				image[SIZE-i][j]=image[i][j];
+				image[SIZE - i][j] = image[i][j];
 			}
-		  }
-		  cout<<"Effect Applied Successfully\n";
-		    break;
-		default:
-		 cout<<"Invalid Input\n";
-		    break;
+		}
+		cout << "Effect Applied Successfully\n";
+		break;
+	default:
+		cout << "Invalid Input\n";
+		break;
 	}
 }
-void flip(){
+void Image::flip() {
 	char Flip_Image_Input;
 	unsigned char image2[SIZE][SIZE];
-	cin>>Flip_Image_Input;
-	switch(Flip_Image_Input){
-		case 'h':
-		for(int i=0;i<SIZE;i++)
-		  {
-			for(int j=0;j<SIZE;j++)
+	cin >> Flip_Image_Input;
+	switch (Flip_Image_Input) {
+	case 'h':
+		for (int i = 0; i < SIZE; i++)
+		{
+			for (int j = 0; j < SIZE; j++)
 			{
-             image2[i][j]=image[i][SIZE-j];
+				image2[i][j] = image[i][SIZE - j];
 			}
-		  }
-		 for(int i=0;i<SIZE;i++)
-		  {
-			for(int j=0;j<SIZE;j++)
+		}
+		for (int i = 0; i < SIZE; i++)
+		{
+			for (int j = 0; j < SIZE; j++)
 			{
-             image[i][j]=image2[i][j];
+				image[i][j] = image2[i][j];
 			}
-		  }
-		 break;
-		case 'v':
-		for(int i=0;i<SIZE;i++)
-		  {
-			for(int j=0;j<SIZE;j++)
+		}
+		break;
+	case 'v':
+		for (int i = 0; i < SIZE; i++)
+		{
+			for (int j = 0; j < SIZE; j++)
 			{
-             image2[i][j]=image[SIZE-i][j];
+				image2[i][j] = image[SIZE - i][j];
 			}
-		  }
-		 for(int i=0;i<SIZE;i++)
-		  {
-			for(int j=0;j<SIZE;j++)
+		}
+		for (int i = 0; i < SIZE; i++)
+		{
+			for (int j = 0; j < SIZE; j++)
 			{
-             image[i][j]=image2[i][j];
+				image[i][j] = image2[i][j];
 			}
-		  }
-		 break;
-		default:
-		 cout<<"invalid input\n";
-		 break;
+		}
+		break;
+	default:
+		cout << "invalid input\n";
+		break;
 	}
 }
-void crop(){
-	int X,Y,L,W;
-	cin>>X>>Y>>L>>W;
-	for(int i =0;i<SIZE;i++)
+void Image::crop() {
+	int X, Y, L, W;
+	cin >> X >> Y >> L >> W;
+	for (int i = 0; i < SIZE; i++)
 	{
-		for(int j=0;j<SIZE;j++)
+		for (int j = 0; j < SIZE; j++)
 		{
-			if(X<=i&&i<=L&&Y<=j&&j<=W){
+			if (X <= i && i <= L && Y <= j && j <= W) {
 				;
 			}
 			else
 			{
-			   image[i][j]=255;
+				image[i][j] = 255;
 			}
 		}
 	}
 }
-void toBlackWhite(){
-	for(int i =0;i<SIZE;i++)
+void Image::toBlackWhite() {
+	int avarage = getAvarage();
+	for (int i = 0; i < SIZE; i++)
 	{
-		for(int j=0;j<SIZE;j++)
+		for (int j = 0; j < SIZE; j++)
 		{
-			if(image[i][j]<127)
+			if (image[i][j] < avarage)
 			{
-				image[i][j]=0;
+				image[i][j] = 0;
 			}
 			else
 			{
-				image[i][j]=255;
+				image[i][j] = 255;
 			}
 		}
 	}
 }
-void detectEdges(){
+void Image::detectEdges() {
 	int changeH;
 	int changeV;
 	int Grad;
 	int image2[SIZE][SIZE];
-	for(int j =2;j<=SIZE;j++)
+	for (int j = 2; j <= SIZE; j++)
 	{
-		for(int i=2;i<=SIZE-2;i++)
+		for (int i = 2; i <= SIZE - 2; i++)
 		{
-			
-			changeH=
-			-1*image[i-1][j+1]-2*image[i-1][j]-1*image[i-1][j-1]
-			+0*image[i][j-1]+0*image[i][j]+0*image[i][j+1]
-			+1*image[i+1][j-1]+2*image[i+1][j]+1*image[i+1][j+1];
-			changeV=
-			+1*image[i-1][j+1]+0*image[i-1][j]-1*image[i-1][j-1]
-			-2*image[i][j-1]+0*image[i][j]+2*image[i][j+1]
-			-1*image[i+1][j-1]+0*image[i+1][j]+1*image[i+1][j+1];
-			Grad=sqrt(pow(changeH,2)+pow(changeV,2));
-			image2[i][j]=255-Grad;
+
+			changeH =
+				-1 * image[i - 1][j + 1] - 2 * image[i - 1][j] - 1 * image[i - 1][j - 1]
+				+ 0 * image[i][j - 1] + 0 * image[i][j] + 0 * image[i][j + 1]
+				+ 1 * image[i + 1][j - 1] + 2 * image[i + 1][j] + 1 * image[i + 1][j + 1];
+			changeV =
+				+1 * image[i - 1][j + 1] + 0 * image[i - 1][j] - 1 * image[i - 1][j - 1]
+				- 2 * image[i][j - 1] + 0 * image[i][j] + 2 * image[i][j + 1]
+				- 1 * image[i + 1][j - 1] + 0 * image[i + 1][j] + 1 * image[i + 1][j + 1];
+			Grad = sqrt(pow(changeH, 2) + pow(changeV, 2));
+			image2[i][j] = 255 - Grad;
 		}
 	}
-	for(int j =0;j<SIZE;j++)
+	for (int j = 0; j < SIZE; j++)
 	{
-		for(int i=0;i<SIZE;i++)
+		for (int i = 0; i < SIZE; i++)
 		{
-			image[i][j]=image2[i][j];
+			image[i][j] = image2[i][j];
 		}
 	}
 }
 //rotateImage
-void rotate(){
+void Image::rotate() {
 	char rotareInput;
 	unsigned char image2[SIZE][SIZE];
-	cin>>rotareInput;
-	switch(rotareInput){
-		case 'w':
-		for(int i=0;i<SIZE;i++)
+	cin >> rotareInput;
+	switch (rotareInput) {
+	case 'w':
+		for (int i = 0; i < SIZE; i++)
 		{
-			for(int j=0;j<SIZE;j++)
+			for (int j = 0; j < SIZE; j++)
 			{
-            image2[i][j]=image[i][SIZE-j];
+				image2[i][j] = image[i][SIZE - j];
 			}
 		}
-		for(int i=0;i<SIZE;i++)
+		for (int i = 0; i < SIZE; i++)
 		{
-			for(int j=0;j<SIZE;j++)
+			for (int j = 0; j < SIZE; j++)
 			{
-            image[i][j]=image2[SIZE-i][j];
-			}
-		}
-		break;
-		case 'x':
-		for(int i=0;i<SIZE;i++)
-		{
-			for(int j=0;j<SIZE;j++)
-			{
-            image2[i][j]=image[SIZE-j][i];
-			}
-		}
-		for(int i=0;i<SIZE;i++)
-		{
-			for(int j=0;j<SIZE;j++)
-			{
-            image[i][j]=image2[i][j];
+				image[i][j] = image2[SIZE - i][j];
 			}
 		}
 		break;
-		case'y':
-		for(int i = 0;i<SIZE;i++)
+	case 'x':
+		for (int i = 0; i < SIZE; i++)
 		{
-			for(int j=0;j<SIZE;j++)
+			for (int j = 0; j < SIZE; j++)
 			{
-            image2[i][j]=image[i][j];
+				image2[i][j] = image[SIZE - j][i];
 			}
 		}
-		for(int i=0;i<SIZE;i++)
+		for (int i = 0; i < SIZE; i++)
 		{
-			for(int j=0;j<SIZE;j++)
+			for (int j = 0; j < SIZE; j++)
 			{
-            image[SIZE-i][SIZE-j]=image2[i][j];
+				image[i][j] = image2[i][j];
 			}
 		}
-		default:
-		cout<<"invalid input\n";
+		break;
+	case'y':
+		for (int i = 0; i < SIZE; i++)
+		{
+			for (int j = 0; j < SIZE; j++)
+			{
+				image2[i][j] = image[i][j];
+			}
+		}
+		for (int i = 0; i < SIZE; i++)
+		{
+			for (int j = 0; j < SIZE; j++)
+			{
+				image[SIZE - i][SIZE - j] = image2[i][j];
+			}
+		}
+	default:
+		cout << "invalid input\n";
 		break;
 	}
 }
 //enlargeImage
-void enlarge(){
-int image2[SIZE][SIZE];
-int N=SIZE/2;
-char input;
-cout<<"please enter quarter to enlarge\n";
-cin>>input;
-switch(input)
-{
-    case'1':
-		for (int i =0;i<N;i++)
+void Image::enlarge() {
+	int image2[SIZE][SIZE];
+	int N = SIZE / 2;
+	char input;
+	cout << "please enter quarter to enlarge\n";
+	cin >> input;
+	switch (input)
+	{
+	case'1':
+		for (int i = 0; i < N; i++)
 		{
-			for(int j=0;j<N;j++)
+			for (int j = 0; j < N; j++)
 			{
-				image2[i][j]=image[i][j];
+				image2[i][j] = image[i][j];
 			}
 		}
-		for(int i=0;i<=SIZE/2;i++)
+		for (int i = 0; i <= SIZE / 2; i++)
 		{
-			for(int j=0;j<=SIZE/2;j++)
-			{ 
-				int i2=i*2;
-				int j2=j*2;
-				image[i2][j2]=image2[i][j];
+			for (int j = 0; j <= SIZE / 2; j++)
+			{
+				int i2 = i * 2;
+				int j2 = j * 2;
+				image[i2][j2] = image2[i][j];
 
-				image[i2+1][j2]=image2[i][j];
+				image[i2 + 1][j2] = image2[i][j];
 
-				image[i2][j2+1]=image2[i][j];
+				image[i2][j2 + 1] = image2[i][j];
 
-				image[i2+1][j2+1]=image2[i][j];
+				image[i2 + 1][j2 + 1] = image2[i][j];
 			}
 		}
-    break;
-    case '2': 
-		for (int i =0;i<SIZE;i++){
-		for(int j=0;j<N;j++){
+		break;
+	case '2':
+		for (int i = 0; i < SIZE; i++) {
+			for (int j = 0; j < N; j++) {
 
-			image2[i][j]=image[i][j+N];
+				image2[i][j] = image[i][j + N];
+			}
 		}
-	}
-		for(int i=0;i<=SIZE/2;i++)
-	{
-		for(int j=0;j<=SIZE/2;j++)
-		{ 
-			int i2=i*2;
-			int j2=j*2;
-			image[i2][j2]=image2[i][j];
+		for (int i = 0; i <= SIZE / 2; i++)
+		{
+			for (int j = 0; j <= SIZE / 2; j++)
+			{
+				int i2 = i * 2;
+				int j2 = j * 2;
+				image[i2][j2] = image2[i][j];
 
-			image[i2+1][j2]=image2[i][j];
+				image[i2 + 1][j2] = image2[i][j];
 
-			image[i2][j2+1]=image2[i][j];
+				image[i2][j2 + 1] = image2[i][j];
 
-			image[i2+1][j2+1]=image2[i][j];
+				image[i2 + 1][j2 + 1] = image2[i][j];
+			}
 		}
-	}
-	break;
+		break;
 	case '3':
-	for (int i =0;i<N;i++)
-	{
-		for(int j=0;j<SIZE;j++)
+		for (int i = 0; i < N; i++)
 		{
-			image2[i][j]=image[i+N][j];
+			for (int j = 0; j < SIZE; j++)
+			{
+				image2[i][j] = image[i + N][j];
+			}
 		}
-	}
-	for(int i=0;i<=SIZE/2;i++)
-	{
-		for(int j=0;j<=SIZE/2;j++)
-		{ 
-			int i2=i*2;
-			int j2=j*2;
-			image[i2][j2]=image2[i][j];
-
-			image[i2+1][j2]=image2[i][j];
-
-			image[i2][j2+1]=image2[i][j];
-
-			image[i2+1][j2+1]=image2[i][j];
-		}
-	}
-break;
-case '4':
-		for (int i =0;i<SIZE;i++){
-
-		for(int j=0;j<SIZE;j++)
+		for (int i = 0; i <= SIZE / 2; i++)
 		{
-			image2[i][j]=image[i+N][j+N];
-		}
-		}
-		for(int i=0;i<=SIZE/2;i++){
+			for (int j = 0; j <= SIZE / 2; j++)
+			{
+				int i2 = i * 2;
+				int j2 = j * 2;
+				image[i2][j2] = image2[i][j];
 
-		for(int j=0;j<=SIZE/2;j++)
-		{ 
-			int i2=i*2;
-			int j2=j*2;
-			image[i2][j2]=image2[i][j];
+				image[i2 + 1][j2] = image2[i][j];
 
-			image[i2+1][j2]=image2[i][j];
+				image[i2][j2 + 1] = image2[i][j];
 
-			image[i2][j2+1]=image2[i][j];
-
-			image[i2+1][j2+1]=image2[i][j];
+				image[i2 + 1][j2 + 1] = image2[i][j];
+			}
 		}
+		break;
+	case '4':
+		for (int i = 0; i < SIZE; i++) {
+
+			for (int j = 0; j < SIZE; j++)
+			{
+				image2[i][j] = image[i + N][j + N];
+			}
 		}
-break;
-default: 
-    cout<<"invalid input\n";
-	break;
+		for (int i = 0; i <= SIZE / 2; i++) {
+
+			for (int j = 0; j <= SIZE / 2; j++)
+			{
+				int i2 = i * 2;
+				int j2 = j * 2;
+				image[i2][j2] = image2[i][j];
+
+				image[i2 + 1][j2] = image2[i][j];
+
+				image[i2][j2 + 1] = image2[i][j];
+
+				image[i2 + 1][j2 + 1] = image2[i][j];
+			}
+		}
+		break;
+	default:
+		cout << "invalid input\n";
+		break;
+	}
 }
+
+int Image::getAvarage()
+{
+	int sum = 0;
+	for (int i = 0; i < SIZE; i++)
+	{
+		for (int j = 0; j < SIZE; j++)
+		{
+			sum += image[i][j];
+		}
+	}
+	return sum / SIZE / SIZE;
 }
