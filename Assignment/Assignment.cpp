@@ -9,19 +9,26 @@
 using namespace std;
 
 unsigned char image[SIZE][SIZE];
-int loadImage();
-void saveImage();
+int load();
+void save();
 int merge();
 void multiply(float factor);
 void invert();
 void shrink(int factor);
-void rotateImage();
+void mirror();
+void flip();
+void crop();
+void toBlackWhite();
+void detectEdges();
+void rotate();
+void enlarge();
+
 int main()
 {
 	cout << "welcome,\n";
 	cout << "Enter filename: ";
 	// get filename from user and load it, if file does not exist try again.
-	while (loadImage());
+	while (load());
 	bool running = true;
 	while (running)
 	{
@@ -54,8 +61,8 @@ int main()
 			break;
 		case '1':
 			cout << "Black and White filter applied\n";
-			void Black_White_Filter();
-			Black_White_Filter();
+			void toBlackWhite();
+			toBlackWhite();
 			break;
 		case '2':
 			invert();
@@ -65,8 +72,8 @@ int main()
 			break;
 		case '4':
 			cout<<"Flip (h)orizontally or (v)ertically ?\n";
-			void Flip_Image();
-			Flip_Image();
+			void flip();
+			flip();
 			break;
 		case '5':
 		{
@@ -79,17 +86,17 @@ int main()
 		}
 		case '6':
 			cout << "rotate (w)270deg or  or (x)90deg or (y)180deg\n";
-			void rotateImage();
-			rotateImage();
+			void rotate();
+			rotate();
 			break;
 		case '7':
 			cout << "Detect Image Edges applied\n";
-			void Detect_Image_Edges();
-			Detect_Image_Edges();
+			void detectEdges();
+			detectEdges();
 			break;
 		case '8':
-			void enlargeImage();
-			enlargeImage();
+			void enlarge();
+			enlarge();
 			cout << "Filter Applied\n";
 			break;
 		case '9':
@@ -101,9 +108,9 @@ int main()
 			break;
 		}
 		case 'a':
-			void Mirror_Image();
+			void mirror();
 			cout<<"Mirror (l)eft, (r)ight, (u)pper, (d)own side?\n";
-			Mirror_Image();
+			mirror();
 			break;
 		case 'b':
 			cout << "Work in progress\n";
@@ -113,8 +120,8 @@ int main()
 			break;
 		case 'd':
 			cout << "Please enter x y l w:\n";
-			void Crop_Image();
-			Crop_Image();
+			void crop();
+			crop();
 			break;
 		case 'e':
 			cout << "Work in progress\n";
@@ -123,7 +130,7 @@ int main()
 			cout << "Work in progress\n";
 			break;
 		case 's':
-			saveImage();
+			save();
 			break;
 		// if operation code does not match any defined operation 
 		default:
@@ -134,7 +141,7 @@ int main()
 	return 0;
 }
 // load image from file
-int loadImage() {
+int load() {
 	char imageFileName[100];
 
 	// Get gray scale image file name
@@ -147,7 +154,7 @@ int loadImage() {
 }
 
 // save image to file
-void saveImage() {
+void save() {
 	char imageFileName[100];
 
 	// Get gray scale image target file name
@@ -237,7 +244,7 @@ void shrink(int factor)
 		}
 	}
 }
-void Mirror_Image()
+void mirror()
 {
 	char Mirror_input;
 	int Switch_Var1;
@@ -289,7 +296,7 @@ void Mirror_Image()
 		    break;
 	}
 }
-void Flip_Image(){
+void flip(){
 	char Flip_Image_Input;
 	unsigned char image2[SIZE][SIZE];
 	cin>>Flip_Image_Input;
@@ -331,7 +338,7 @@ void Flip_Image(){
 		 break;
 	}
 }
-void Crop_Image(){
+void crop(){
 	int X,Y,L,W;
 	cin>>X>>Y>>L>>W;
 	for(int i =0;i<SIZE;i++)
@@ -348,7 +355,7 @@ void Crop_Image(){
 		}
 	}
 }
-void Black_White_Filter(){
+void toBlackWhite(){
 	for(int i =0;i<SIZE;i++)
 	{
 		for(int j=0;j<SIZE;j++)
@@ -364,7 +371,7 @@ void Black_White_Filter(){
 		}
 	}
 }
-void Detect_Image_Edges(){
+void detectEdges(){
 	int changeH;
 	int changeV;
 	int Grad;
@@ -395,7 +402,7 @@ void Detect_Image_Edges(){
 	}
 }
 //rotateImage
-void rotateImage(){
+void rotate(){
 	char rotareInput;
 	unsigned char image2[SIZE][SIZE];
 	cin>>rotareInput;
@@ -453,7 +460,7 @@ void rotateImage(){
 	}
 }
 //enlargeImage
-void enlargeImage(){
+void enlarge(){
 int image2[SIZE][SIZE];
 int N=SIZE/2;
 char input;
