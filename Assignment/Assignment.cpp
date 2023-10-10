@@ -11,7 +11,7 @@ public:
 	void merge(unsigned char other[SIZE][SIZE]);
 	void copyTo(unsigned char other[SIZE][SIZE]);
 	void copyFrom(unsigned char other[SIZE][SIZE]);
-	void multiply(float factor);
+	void lighten(float factor);
 	void invert();
 	void shrink(int factor);
 	void mirror();
@@ -89,7 +89,7 @@ int main()
 			char input;
 			cin >> input;
 			float factor = input == 'd' ? 0.5 : input == 'l' ? 1.5 : 0;
-			image.multiply(factor);
+			image.lighten(factor);
 			break;
 		}
 		case '6':
@@ -222,15 +222,18 @@ void Image::copyFrom(unsigned char other[SIZE][SIZE])
 }
 
 // multiply all pixels with a factor for darkening and lightening
-void Image::multiply(float factor)
+void Image::lighten(float factor)
 {
+	float average = getAvarage();
+	float diff = average * factor - average;
 	for (int i = 0; i < SIZE; i++)
 	{
 		for (int j = 0; j < SIZE; j++)
 		{
-			float pixel = (float)image[i][j] * factor;
-			// limit pixel value to 255
-			pixel = pixel > 255 ? 255 : pixel;
+			float pixel = (float)image[i][j] + diff;
+			// clamp values between 0 and SIZE -1
+			pixel = pixel > SIZE - 1 ? SIZE - 1 : pixel;
+			pixel = pixel < 0 ? 0 : pixel;
 			image[i][j] = pixel;
 		}
 	}
