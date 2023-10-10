@@ -408,11 +408,12 @@ void Image::detectEdges() {
 	{
 		for (int i = 2; i <= SIZE - 2; i++)
 		{
-
+                        //Horizontal Kernal.
 			changeH =
 				-1 * image[i - 1][j + 1] - 2 * image[i - 1][j] - 1 * image[i - 1][j - 1]
 				+ 0 * image[i][j - 1] + 0 * image[i][j] + 0 * image[i][j + 1]
 				+ 1 * image[i + 1][j - 1] + 2 * image[i + 1][j] + 1 * image[i + 1][j + 1];
+			//Vertical Kernal.
 			changeV =
 				+1 * image[i - 1][j + 1] + 0 * image[i - 1][j] - 1 * image[i - 1][j - 1]
 				- 2 * image[i][j - 1] + 0 * image[i][j] + 2 * image[i][j + 1]
