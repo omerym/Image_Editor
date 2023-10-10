@@ -224,6 +224,7 @@ void Image::copyFrom(unsigned char other[SIZE][SIZE])
 // multiply all pixels with a factor for darkening and lightening
 void Image::lighten(float factor)
 {
+	// calculate change in pixels based on average pixel
 	float average = getAvarage();
 	float diff = average * factor - average;
 	for (int i = 0; i < SIZE; i++)
@@ -625,25 +626,26 @@ int Image::getAvarage()
 void Image::skewUp(float degree)
 {
 	float scale = 1 / (1 + tan(degree * 3.14 / 180));
-	float arr[2][2];
-	float arr1[2][2] = { { 1,0},
+	float transformation[2][2];
+	float skewMatrix[2][2] = { { 1,0},
 						{tan(-degree * 3.14 / 180),1} };
-	float f[2][2] = { { scale,0},
+	float scalerMatrix[2][2] = { { scale,0},
 					{0,1} };
-	combineTransformations(arr, arr1, f);
-	trasform(arr,0, SIZE - 1);
+	combineTransformations(transformation, skewMatrix, scalerMatrix);
+	trasform(transformation,0, SIZE - 1);
 }
 void Image::skewRight(float degree)
 {
 	float scale = 1 / (1 + tan(degree * 3.14 / 180));
-	float arr[2][2];
-	float arr1[2][2] = { { 1,tan(-degree * 3.14 / 180)},
+	float transformation[2][2];
+	float skewMatrix[2][2] = { { 1,tan(-degree * 3.14 / 180)},
 						{0,1} };
-	float f[2][2] = { { 1,0},
+	float scalerMatrix[2][2] = { { 1,0},
 					{0,scale} };
-	combineTransformations(arr, arr1, f);
-	trasform(arr,SIZE - 1);
+	combineTransformations(transformation, skewMatrix, scalerMatrix);
+	trasform(transformation,SIZE - 1);
 }
+// combine two linear transformations ORDER IS IMPORTANT!
 void Image::combineTransformations(float output[2][2], float first[2][2], float second[2][2])
 {
 	output[0][0] = second[0][0] * first[0][0] + second[1][0] * first[0][1];
@@ -652,8 +654,10 @@ void Image::combineTransformations(float output[2][2], float first[2][2], float 
 	output[1][1] = second[0][1] * first[1][0] + second[1][1] * first[1][1];
 
 }
+// performs a linear transformation on the image
 void Image::trasform(float transformation[2][2], int centreX, int centreY)
 {
+	// sets an image with white color for areas outside image boundry
 	unsigned char t[SIZE][SIZE];
 	for (int i = 0; i < SIZE; i++)
 	{
@@ -662,10 +666,12 @@ void Image::trasform(float transformation[2][2], int centreX, int centreY)
 			t[SIZE][SIZE] = SIZE - 1;
 		}
 	}
+	// apply the transformation
 	for (int i = 0 - centreX; i < SIZE - centreX; i++)
 	{
 		for (int j = 0 - centreY; j < SIZE - centreY; j++)
 		{
+			//matrix multiplication
 			int it = transformation[0][0] * i + transformation[1][0] * j + centreX;
 			int jt = transformation[0][1] * i + transformation[1][1] * j + centreY;
 			bool is_iValid = it >= 0 && it < SIZE;
@@ -676,5 +682,6 @@ void Image::trasform(float transformation[2][2], int centreX, int centreY)
 			}
 		}
 	}
+	// copy the transfotmed image back
 	copyFrom(t);
 }
