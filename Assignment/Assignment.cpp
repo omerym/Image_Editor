@@ -1,12 +1,11 @@
 ﻿#include <iostream>
 #include <string>
-#include <cmath>
+#include <cstring>
+#include <math.h>
 #include "bmplib.cpp"
 using namespace std;
 class Image
 {
-	void skewUp(float degree);
-	void skewRight(float degree);
 public:
 	unsigned char image[SIZE][SIZE];
 	void merge(unsigned char other[SIZE][SIZE]);
@@ -23,8 +22,9 @@ public:
 	void rotate();
 	void enlarge();
 	int getAvarage();
-	void skew(bool isVertical, float degree);
-	void trasform(float inverseTransformation[2][2]);
+	void skewUp(float degree);
+	void skewRight(float degree);
+	void trasform(float inverseTransformation[2][2], int centreX = 0, int centreY = 0);
 };
 
 int load(unsigned char image[][SIZE]);
@@ -130,7 +130,7 @@ int main()
 			cout << "Please enter degree to skew right:";
 			float deg;
 			cin >> deg;
-			image.skew(false,deg);
+			image.skewRight(deg);
 			break;
 		}
 		case 'f':
@@ -138,7 +138,7 @@ int main()
 			cout << "Please enter degree to skew up:";
 			float deg;
 			cin >> deg;
-			image.skew(true, deg);
+			image.skewUp( deg);
 			break;
 		}
 		case 's':
@@ -609,55 +609,43 @@ int Image::getAvarage()
 	}
 	return sum / SIZE / SIZE;
 }
-void Image::skew(bool isUp,float degree)
-{
-	if (isUp)
-	{
-		skewUp(degree);
-	}
-	else
-	{
-		skewRight(degree);
-	}
-}
 
 void Image::skewUp(float degree)
 {
-	float arr[2][2] = {{ 1,tan(degree)},
+	float arr[2][2] = {{ 1,tan(-degree *3.14 / 180)},
 						{0,1} };
 	trasform(arr);
 }
 void Image::skewRight(float degree)
 {
 	float arr[2][2] = { { 1,0},
-						{tan(degree),1} };
+						{tan(-degree * 3.14 / 180),1} };
 	trasform(arr);
 }
 
-void Image::trasform(float inverseTransformation[2][2])
+void Image::trasform(float transformation[2][2], int centreX, int centreY)
 {
-	int mid = SIZE / 2;
 	unsigned char t[SIZE][SIZE];
-	copyTo(t);
-	for (int i = -mid; i < mid; i++)
+	for (int i = 0; i < SIZE; i++)
 	{
-		for (int j = -mid; j < mid; j++)
+		for (int j = 0; j < SIZE; j++)
 		{
-			// transformed coordinates
-			int it = inverseTransformation[0][0] * i + inverseTransformation[0][1] * j + mid;
-			int jt = inverseTransformation[1][0] * i + inverseTransformation[1][1] * j + mid;
-			// if coordinates are valid
+			t[SIZE][SIZE] = SIZE - 1;
+		}
+	}
+	for (int i = 0 - centreX; i < SIZE - centreX; i++)
+	{
+		for (int j = 0 - centreY; j < SIZE - centreY; j++)
+		{
+			int it = transformation[0][0] * i + transformation[0][1] * j + centreX;
+			int jt = transformation[1][0] * i + transformation[1][1] * j + centreY;
 			bool is_iValid = it >= 0 && it < SIZE;
 			bool is_jValid = jt >= 0 && jt < SIZE;
 			if (is_iValid && is_jValid)
 			{
-				image[i + mid][j + mid] = t[it][jt];
-			}
-			//coordinates outside image boundries
-			else
-			{
-				image[i + mid][j + mid] = SIZE - 1;
+				t[it][jt] = image[i + centreX][j + centreY];
 			}
 		}
 	}
+	copyFrom(t);
 }
