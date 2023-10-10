@@ -418,14 +418,21 @@ void Image::detectEdges() {
 				- 2 * image[i][j - 1] + 0 * image[i][j] + 2 * image[i][j + 1]
 				- 1 * image[i + 1][j - 1] + 0 * image[i + 1][j] + 1 * image[i + 1][j + 1];
 			Grad = sqrt(pow(changeH, 2) + pow(changeV, 2));
-			image2[i][j] = 255 - Grad;
+			image2[i][j] = Grad;
 		}
 	}
 	for (int j = 0; j < SIZE; j++)
 	{
 		for (int i = 0; i < SIZE; i++)
 		{
-			image[i][j] = image2[i][j];
+			i(image2[i][j]>127)
+			{
+				image[i][j] = 0;
+			}
+			else
+			{
+				image[i][j]=255;
+			}
 		}
 	}
 }
