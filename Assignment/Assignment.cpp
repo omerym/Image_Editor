@@ -620,7 +620,7 @@ void Image::skewRight(float degree)
 {
 	float arr[2][2] = { { 1,0},
 						{tan(-degree * 3.14 / 180),1} };
-	trasform(arr);
+	trasform(arr,SIZE - 1,SIZE-1);
 }
 
 void Image::trasform(float transformation[2][2], int centreX, int centreY)
