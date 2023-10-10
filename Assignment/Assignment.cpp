@@ -425,7 +425,7 @@ void Image::detectEdges() {
 	{
 		for (int i = 0; i < SIZE; i++)
 		{
-			i(image2[i][j]>127)
+			if(image2[i][j]>127)
 			{
 				image[i][j] = 0;
 			}
