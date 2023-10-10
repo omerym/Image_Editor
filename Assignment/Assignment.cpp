@@ -19,6 +19,7 @@ public:
 	void crop();
 	void toBlackWhite();
 	void detectEdges();
+	void rotate(float degree);
 	void rotate();
 	void enlarge();
 	int getAvarage();
@@ -85,7 +86,7 @@ int main()
 			break;
 		case '5':
 		{
-			cout << "Do you want to (d)arken or (l)ighten?\n";
+			cout << "Do you want to (d)arken or (l)ighten?: ";
 			char input;
 			cin >> input;
 			float factor = input == 'd' ? 0.5 : input == 'l' ? 1.5 : 0;
@@ -93,12 +94,17 @@ int main()
 			break;
 		}
 		case '6':
-			cout << "rotate (w)270deg or  or (x)90deg or (y)180deg\n";
-			image.rotate();
+		{
+			cout << "Enter degrees of rotation(90,180,270): ";
+			float degree;
+			cin >> degree;
+			image.rotate(degree);
 			break;
+		}
 		case '7':
-			cout << "Detect Image Edges applied\n";
+			cout << "Appling Detect Image Edges\n";
 			image.detectEdges();
+			cout << "Detect Image Edges applied\n";
 			break;
 		case '8':
 			image.enlarge();
@@ -113,7 +119,7 @@ int main()
 			break;
 		}
 		case 'a':
-			cout<<"Mirror (l)eft, (r)ight, (u)pper, (d)own side?\n";
+			cout<<"Mirror (l)eft, (r)ight, (u)pper, (d)own side: ";
 			image.mirror();
 			break;
 		case 'b':
@@ -442,7 +448,16 @@ void Image::detectEdges() {
 		}
 	}
 }
-//rotateImage
+
+void Image::rotate(float degree)
+{
+	//degree to radian
+	degree *= -3.14 / 180;
+	float rotation[2][2] = { {cos(degree),sin(degree)},
+							 {-sin(degree),cos(degree)}};
+	trasform(rotation, SIZE / 2, SIZE / 2);
+}
+
 void Image::rotate() {
 	char rotareInput;
 	unsigned char image2[SIZE][SIZE];
