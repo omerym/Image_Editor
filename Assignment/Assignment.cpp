@@ -24,6 +24,7 @@ public:
 	int getAvarage();
 	void skewUp(float degree);
 	void skewRight(float degree);
+	void combineTransformations(float output[2][2], float first[2][2], float second[2][2]);
 	void trasform(float inverseTransformation[2][2], int centreX = 0, int centreY = 0);
 };
 
@@ -620,17 +621,34 @@ int Image::getAvarage()
 
 void Image::skewUp(float degree)
 {
-	float arr[2][2] = {{ 1,tan(-degree *3.14 / 180)},
-						{0,1} };
-	trasform(arr);
+	float scale = 1 / (1 + tan(degree * 3.14 / 180));
+	float arr[2][2];
+	float arr1[2][2] = { { 1,0},
+						{tan(-degree * 3.14 / 180),1} };
+	float f[2][2] = { { scale,0},
+					{0,1} };
+	combineTransformations(arr, arr1, f);
+	trasform(arr,0, SIZE - 1);
 }
 void Image::skewRight(float degree)
 {
-	float arr[2][2] = { { 1,0},
-						{tan(-degree * 3.14 / 180),1} };
-	trasform(arr,SIZE - 1,SIZE-1);
+	float scale = 1 / (1 + tan(degree * 3.14 / 180));
+	float arr[2][2];
+	float arr1[2][2] = { { 1,tan(-degree * 3.14 / 180)},
+						{0,1} };
+	float f[2][2] = { { 1,0},
+					{0,scale} };
+	combineTransformations(arr, arr1, f);
+	trasform(arr,SIZE - 1);
 }
+void Image::combineTransformations(float output[2][2], float first[2][2], float second[2][2])
+{
+	output[0][0] = second[0][0] * first[0][0] + second[1][0] * first[0][1];
+	output[0][1] = second[0][1] * first[0][0] + second[1][1] * first[0][1];
+	output[1][0] = second[0][0] * first[1][0] + second[1][0] * first[1][1];
+	output[1][1] = second[0][1] * first[1][0] + second[1][1] * first[1][1];
 
+}
 void Image::trasform(float transformation[2][2], int centreX, int centreY)
 {
 	unsigned char t[SIZE][SIZE];
@@ -645,8 +663,8 @@ void Image::trasform(float transformation[2][2], int centreX, int centreY)
 	{
 		for (int j = 0 - centreY; j < SIZE - centreY; j++)
 		{
-			int it = transformation[0][0] * i + transformation[0][1] * j + centreX;
-			int jt = transformation[1][0] * i + transformation[1][1] * j + centreY;
+			int it = transformation[0][0] * i + transformation[1][0] * j + centreX;
+			int jt = transformation[0][1] * i + transformation[1][1] * j + centreY;
 			bool is_iValid = it >= 0 && it < SIZE;
 			bool is_jValid = jt >= 0 && jt < SIZE;
 			if (is_iValid && is_jValid)
