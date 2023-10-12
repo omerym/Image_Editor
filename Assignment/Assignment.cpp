@@ -28,7 +28,7 @@ public:
 	void shrink(int factor);
 	void mirror();
 	void flip();
-	void crop();
+	void crop(int x, int y, int w, int l);
 	void toBlackWhite();
 	void detectEdges();
 	void rotate(float degree);
@@ -141,9 +141,15 @@ int main()
 			cout << "Work in progress\n";
 			break;
 		case 'd':
-			cout << "Please enter x y l w:\n";
-			image.crop();
+		{
+			int x, y, w, l;
+			cout << "Please enter crop position (x,y)";
+			cin >> x >> y;
+			cout << "Please enter crop dimensions (w,l)";
+			cin >> w >> l;
+			image.crop(x,y,w,l);
 			break;
+		}
 		case 'e':
 		{
 			cout << "Please enter degree to skew right:";
@@ -349,6 +355,7 @@ void Image::mirror()
 void Image::flip() {
 	char Flip_Image_Input;
 	unsigned char image2[SIZE][SIZE];
+
 	cin >> Flip_Image_Input;
 	switch (Flip_Image_Input) {
 	case 'h':
@@ -388,18 +395,15 @@ void Image::flip() {
 		break;
 	}
 }
-void Image::crop() {
-	int X, Y, L, W;
-	cin >> X >> Y >> L >> W;
+void Image::crop(int x,int y,int w, int l) {
 	for (int i = 0; i < SIZE; i++)
 	{
 		for (int j = 0; j < SIZE; j++)
 		{
-			if (X <= i && i <= L && Y <= j && j <= W) {
-				;
-			}
-			else
+			// check if pixel is outside specified boundry
+			if (i < x || i >= x + w || i < y || i >= y + l)
 			{
+				// set pixel to maximum value (white)
 				image[i][j] = 255;
 			}
 		}
@@ -470,64 +474,6 @@ void Image::rotate(float degree)
 	trasform(rotation, SIZE / 2, SIZE / 2);
 }
 
-void Image::rotate() {
-	char rotareInput;
-	unsigned char image2[SIZE][SIZE];
-	cin >> rotareInput;
-	switch (rotareInput) {
-	case 'w':
-		for (int i = 0; i < SIZE; i++)
-		{
-			for (int j = 0; j < SIZE; j++)
-			{
-				image2[i][j] = image[i][SIZE - j];
-			}
-		}
-		for (int i = 0; i < SIZE; i++)
-		{
-			for (int j = 0; j < SIZE; j++)
-			{
-				image[i][j] = image2[SIZE - i][j];
-			}
-		}
-		break;
-	case 'x':
-		for (int i = 0; i < SIZE; i++)
-		{
-			for (int j = 0; j < SIZE; j++)
-			{
-				image2[i][j] = image[SIZE - j][i];
-			}
-		}
-		for (int i = 0; i < SIZE; i++)
-		{
-			for (int j = 0; j < SIZE; j++)
-			{
-				image[i][j] = image2[i][j];
-			}
-		}
-		break;
-	case'y':
-		for (int i = 0; i < SIZE; i++)
-		{
-			for (int j = 0; j < SIZE; j++)
-			{
-				image2[i][j] = image[i][j];
-			}
-		}
-		for (int i = 0; i < SIZE; i++)
-		{
-			for (int j = 0; j < SIZE; j++)
-			{
-				image[SIZE - i][SIZE - j] = image2[i][j];
-			}
-		}
-	default:
-		cout << "invalid input\n";
-		break;
-	}
-}
-//enlargeImage
 void Image::enlarge() {
 	int image2[SIZE][SIZE];
 	int N = SIZE / 2;
