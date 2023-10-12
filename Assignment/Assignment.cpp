@@ -18,6 +18,8 @@ Purpose:..........
 using namespace std;
 class Image
 {
+	unsigned char getPixelSafe(int i, int j);
+	unsigned char getPixelByKernal(float kernal[3][3], int x, int y);
 public:
 	unsigned char image[SIZE][SIZE];
 	void merge(unsigned char other[SIZE][SIZE]);
@@ -32,7 +34,8 @@ public:
 	void toBlackWhite();
 	void detectEdges();
 	void rotate(float degree);
-	void rotate();
+	void blur(int s = 1);
+	void applyKernal(float kernal[3][3]);
 	void enlarge();
 	int getAvarage();
 	void skewUp(float degree);
@@ -138,7 +141,8 @@ int main()
 			cout << "Work in progress\n";
 			break;
 		case 'c':
-			cout << "Work in progress\n";
+			image.blur
+			();
 			break;
 		case 'd':
 		{
@@ -460,6 +464,53 @@ void Image::rotate(float degree)
 	trasform(rotation, SIZE / 2, SIZE / 2);
 }
 
+void Image::blur(int s)
+{
+	float kernal[3][3] = {{16,32,16},
+						  {32,1,32},
+						  {16,32,16}
+	};
+	for (int i = 0; i < s; i++)
+	{
+		applyKernal(kernal);
+	}
+}
+void Image::applyKernal(float kernal[3][3])
+{
+	unsigned char t[SIZE][SIZE];
+	for (int i = 0; i < SIZE;i++)
+	{
+		for (int j = 0; j < SIZE; j++)
+		{
+			t[i][j] = getPixelByKernal(kernal, i, j);
+		}
+	}
+	copyFrom(t);
+}
+unsigned char Image::getPixelByKernal(float kernal[3][3], int x, int y)
+{
+	float weightSum = 0;
+	float pixel = 0;
+	for (int i = 0; i < 3; i++)
+	{
+		for (int j = 0; j < 3; j++)
+		{
+			weightSum += kernal[i][j];
+			pixel += kernal[i][j] * getPixelSafe(x + i - 1,y + j - 1);
+		}
+	}
+	pixel /= weightSum;
+	return pixel;
+}
+// return pixel at a position or at border if the position is out of image boundry
+unsigned char Image::getPixelSafe(int i, int j)
+{
+	i = i > 0 ? i : 0;
+	i = i < SIZE ? i : SIZE - 1;
+	j = j > 0 ? j : 0;
+	j = j < SIZE ? j : SIZE - 1;
+	return image[i][j];
+}
 void Image::enlarge() {
 	int image2[SIZE][SIZE];
 	int N = SIZE / 2;
