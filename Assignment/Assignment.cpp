@@ -417,6 +417,7 @@ void Image::toBlackWhite() {
 	}
 }
 void Image::detectEdges() {
+	blur();
 	int changeH;
 	int changeV;
 	int Grad;
@@ -439,11 +440,12 @@ void Image::detectEdges() {
 			image2[i][j] = Grad;
 		}
 	}
+	float average = getAvarage();
 	for (int j = 0; j < SIZE; j++)
 	{
 		for (int i = 0; i < SIZE; i++)
 		{
-			if(image2[i][j]>127)
+			if(image2[i][j]> average)
 			{
 				image[i][j] = 0;
 			}
@@ -466,9 +468,9 @@ void Image::rotate(float degree)
 
 void Image::blur(int s)
 {
-	float kernal[3][3] = {{16,32,16},
-						  {32,1,32},
-						  {16,32,16}
+	float kernal[3][3] = {{1,2,1},
+						  {2,4,2},
+						  {1,2,1}
 	};
 	for (int i = 0; i < s; i++)
 	{
@@ -500,6 +502,8 @@ unsigned char Image::getPixelByKernal(float kernal[3][3], int x, int y)
 		}
 	}
 	pixel /= weightSum;
+	pixel = pixel > 0 ? pixel : 0;
+	pixel = pixel < 255 ? pixel : 255;
 	return pixel;
 }
 // return pixel at a position or at border if the position is out of image boundry
