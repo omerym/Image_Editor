@@ -417,6 +417,7 @@ void Image::toBlackWhite() {
 	}
 }
 void Image::detectEdges() {
+	// blur image before detecting edges to reduce noise effect
 	blur();
 	int changeH;
 	int changeV;
