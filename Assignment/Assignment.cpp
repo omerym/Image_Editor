@@ -355,7 +355,6 @@ void Image::mirror()
 void Image::flip() {
 	char Flip_Image_Input;
 	unsigned char image2[SIZE][SIZE];
-
 	cin >> Flip_Image_Input;
 	switch (Flip_Image_Input) {
 	case 'h':
@@ -364,13 +363,6 @@ void Image::flip() {
 			for (int j = 0; j < SIZE; j++)
 			{
 				image2[i][j] = image[i][SIZE - j];
-			}
-		}
-		for (int i = 0; i < SIZE; i++)
-		{
-			for (int j = 0; j < SIZE; j++)
-			{
-				image[i][j] = image2[i][j];
 			}
 		}
 		break;
@@ -382,18 +374,12 @@ void Image::flip() {
 				image2[i][j] = image[SIZE - i][j];
 			}
 		}
-		for (int i = 0; i < SIZE; i++)
-		{
-			for (int j = 0; j < SIZE; j++)
-			{
-				image[i][j] = image2[i][j];
-			}
-		}
 		break;
 	default:
 		cout << "invalid input\n";
 		break;
 	}
+	copyFrom(image2);
 }
 void Image::crop(int x,int y,int w, int l) {
 	for (int i = 0; i < SIZE; i++)
