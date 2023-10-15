@@ -31,7 +31,11 @@ public:
 	void mirror();
 	void flip();
 	void crop(int x, int y, int w, int l);
-	void toBlackWhite();
+	void toBlackWhite(int threshold, bool inverted = false);
+	void toBlackWhite(bool inverted = false);
+	void getSobelX(int result[SIZE][SIZE]);
+	void getSobelY(int result[SIZE][SIZE]);
+	void detectEdgesT();
 	void detectEdges();
 	void rotate(float degree);
 	void blur(int s = 1);
@@ -53,6 +57,7 @@ int main()
 	cout << "Enter filename: ";
 	// get filename from user and load it, if file does not exist try again.
 	while (load(image.image));
+	image.detectEdgesT();
 	bool running = true;
 	while (running)
 	{
@@ -399,22 +404,72 @@ void Image::crop(int x,int y,int w, int l) {
 		}
 	}
 }
-void Image::toBlackWhite() {
-	int avarage = getAvarage();
+void Image::toBlackWhite(int threshold,bool inverted) {
 	for (int i = 0; i < SIZE; i++)
 	{
 		for (int j = 0; j < SIZE; j++)
 		{
-			if (image[i][j] < avarage)
+			if (image[i][j] < threshold)
 			{
-				image[i][j] = 0;
+				image[i][j] = inverted? 255 : 0;
 			}
 			else
 			{
-				image[i][j] = 255;
+				image[i][j] = inverted? 0 : 255;
 			}
 		}
 	}
+}
+void Image::toBlackWhite(bool inverted)
+{
+	toBlackWhite(getAvarage(), inverted);
+}
+void Image::getSobelX(int result[SIZE][SIZE])
+{
+	for (int j = 0; j < SIZE; j++)
+	{
+		for (int i = 0; i < SIZE; i++)
+		{
+			result[i][j] = 
+			-getPixelSafe(i - 1,j + 1) - 2 * getPixelSafe(i - 1,j) -getPixelSafe(i - 1,j - 1)
+				+ getPixelSafe(i + 1,j + 1) + 2 * getPixelSafe(i + 1,j) + getPixelSafe(i + 1, j - 1);
+		}
+	}
+}
+
+void Image::getSobelY(int result[SIZE][SIZE])
+{
+	for (int j = 0; j < SIZE; j++)
+	{
+		for (int i = 0; i < SIZE; i++)
+		{
+			result[i][j] =
+				getPixelSafe(i - 1, j + 1) + 2 * getPixelSafe(i, j + 1) + getPixelSafe(i + 1, j + 1)
+				- getPixelSafe(i - 1, j - 1) - 2 * getPixelSafe(i, j - 1) -  getPixelSafe(i + 1, j - 1);
+		}
+	}
+}
+void Image::detectEdgesT()
+{
+	// blur image before detecting edges to reduce noise effect
+	blur();
+	int changeH[SIZE][SIZE];
+	int changeV[SIZE][SIZE];
+	int average = getAvarage();
+	getSobelX(changeH);
+	getSobelY(changeV);
+	for (int i = 0; i < SIZE; i++)
+	{
+		for (int j = 0; j < SIZE; j++)
+		{
+			int ch = changeH[i][j];
+			int cv = changeV[i][j];
+			int grad = sqrt(ch * ch + cv * cv);
+			grad = grad < 255 ? grad : 255;
+			image[i][j] = grad;
+		}
+	}
+	toBlackWhite(average, true);
 }
 void Image::detectEdges() {
 	// blur image before detecting edges to reduce noise effect
@@ -502,6 +557,7 @@ unsigned char Image::getPixelByKernal(float kernal[3][3], int x, int y)
 			pixel += kernal[i][j] * getPixelSafe(x + i - 1,y + j - 1);
 		}
 	}
+	weightSum = weightSum != 0 ? weightSum : 1;
 	pixel /= weightSum;
 	pixel = pixel > 0 ? pixel : 0;
 	pixel = pixel < 255 ? pixel : 255;
