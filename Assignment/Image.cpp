@@ -20,7 +20,6 @@ public:
 	void toBlackWhite(bool inverted = false);
 	void getSobelX(int result[SIZE][SIZE]);
 	void getSobelY(int result[SIZE][SIZE]);
-	void detectEdgesT();
 	void detectEdges();
 	void rotate(float degree);
 	void blur(int s = 1);
@@ -265,7 +264,7 @@ void Image::getSobelY(int result[SIZE][SIZE])
 		}
 	}
 }
-void Image::detectEdgesT()
+void Image::detectEdges()
 {
 	// blur image before detecting edges to reduce noise effect
 	blur();
@@ -287,48 +286,6 @@ void Image::detectEdgesT()
 	}
 	toBlackWhite(average, true);
 }
-void Image::detectEdges() {
-	// blur image before detecting edges to reduce noise effect
-	blur();
-	int changeH;
-	int changeV;
-	int Grad;
-	int image2[SIZE][SIZE];
-	for (int j = 2; j <= SIZE; j++)
-	{
-		for (int i = 2; i <= SIZE - 2; i++)
-		{
-			//Horizontal Kernal.
-			changeH =
-				-1 * image[i - 1][j + 1] - 2 * image[i - 1][j] - 1 * image[i - 1][j - 1]
-				+ 0 * image[i][j - 1] + 0 * image[i][j] + 0 * image[i][j + 1]
-				+ 1 * image[i + 1][j - 1] + 2 * image[i + 1][j] + 1 * image[i + 1][j + 1];
-			//Vertical Kernal.
-			changeV =
-				+1 * image[i - 1][j + 1] + 0 * image[i - 1][j] - 1 * image[i - 1][j - 1]
-				- 2 * image[i][j - 1] + 0 * image[i][j] + 2 * image[i][j + 1]
-				- 1 * image[i + 1][j - 1] + 0 * image[i + 1][j] + 1 * image[i + 1][j + 1];
-			Grad = sqrt(pow(changeH, 2) + pow(changeV, 2));
-			image2[i][j] = Grad;
-		}
-	}
-	float average = getAvarage();
-	for (int j = 0; j < SIZE; j++)
-	{
-		for (int i = 0; i < SIZE; i++)
-		{
-			if (image2[i][j] > average)
-			{
-				image[i][j] = 0;
-			}
-			else
-			{
-				image[i][j] = 255;
-			}
-		}
-	}
-}
-
 void Image::rotate(float degree)
 {
 	//degree to radian
