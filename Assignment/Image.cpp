@@ -10,6 +10,7 @@ public:
 	void merge(unsigned char other[SIZE][SIZE]);
 	void copyTo(unsigned char other[SIZE][SIZE]);
 	void copyFrom(unsigned char other[SIZE][SIZE]);
+	void lighten(int average, float factor);
 	void lighten(float factor);
 	void invert();
 	void shrink(int factor);
@@ -72,10 +73,9 @@ void Image::copyFrom(unsigned char other[SIZE][SIZE])
 }
 
 // multiply all pixels with a factor for darkening and lightening
-void Image::lighten(float factor)
+void Image::lighten(int average,float factor)
 {
 	// calculate change in pixels based on average pixel
-	float average = getAvarage();
 	float diff = average * factor - average;
 	for (int i = 0; i < SIZE; i++)
 	{
@@ -89,7 +89,10 @@ void Image::lighten(float factor)
 		}
 	}
 }
-
+void Image::lighten(float factor)
+{
+	lighten(getAvarage(), factor);
+}
 // Invert all image pixels
 void Image::invert()
 {

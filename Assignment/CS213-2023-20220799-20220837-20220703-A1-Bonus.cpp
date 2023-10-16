@@ -24,6 +24,10 @@ void fromGSArray(Image from[RGB]);
 void detectEdges();
 void blur();
 void toBlackWhite();
+int getAverage();
+void skewUp(float deg);
+void skewRight(float deg);
+void lighten(float factor);
 void invert();
 unsigned char image[SIZE][SIZE][RGB];
 int main()
@@ -81,6 +85,7 @@ int main()
 			char input;
 			cin >> input;
 			float factor = input == 'd' ? 0.5 : input == 'l' ? 1.5 : 0;
+			lighten(factor);
 			break;
 		}
 		case '6':
@@ -128,6 +133,7 @@ int main()
 			cout << "Please enter degree to skew right:";
 			float deg;
 			cin >> deg;
+			skewRight(deg);
 			break;
 		}
 		case 'f':
@@ -135,6 +141,7 @@ int main()
 			cout << "Please enter degree to skew up:";
 			float deg;
 			cin >> deg;
+			skewUp(deg);
 			break;
 		}
 		case 's':
@@ -279,6 +286,56 @@ void toBlackWhite()
 				t[color].image[i][j] = temp;
 			}
 		}
+	}
+	fromGSArray(t);
+}
+
+int getAverage()
+{
+	int x = 0;
+	for (int i = 0; i < SIZE; i++)
+	{
+		for (int j = 0; j < SIZE; j++)
+		{
+			for (int c = 0; c < RGB; c++)
+			{
+				x += image[i][j][c];
+			}
+		}
+	}
+	return x / SIZE / SIZE / RGB;
+}
+
+void skewUp(float deg)
+{
+	Image t[RGB];
+	toGSArray(t);
+	for (int c = 0; c < RGB; c++)
+	{
+		t[c].skewUp(deg);
+	}
+	fromGSArray(t);
+}
+
+void skewRight(float deg)
+{
+	Image t[RGB];
+	toGSArray(t);
+	for (int c = 0; c < RGB; c++)
+	{
+		t[c].skewRight(deg);
+	}
+	fromGSArray(t);
+}
+
+void lighten(float factor)
+{
+	Image t[RGB];
+	toGSArray(t);
+	float average = getAverage();
+	for (int c = 0; c < RGB; c++)
+	{
+		t[c].lighten(average, factor);
 	}
 	fromGSArray(t);
 }
