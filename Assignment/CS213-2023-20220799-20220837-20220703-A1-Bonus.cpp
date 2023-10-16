@@ -26,7 +26,6 @@ int main()
 	cout << "Enter filename: ";
 	// get filename from user and load it, if file does not exist try again.
 	while (load(image));
-	image.detectEdgesT();
 	bool running = true;
 	while (running)
 	{
@@ -105,7 +104,7 @@ int main()
 			cout << "Work in progress\n";
 			break;
 		case 'c':
-			();
+			;
 			break;
 		case 'd':
 		{

@@ -31,6 +31,7 @@ public:
 	void skewRight(float degree);
 	void combineTransformations(float output[2][2], float first[2][2], float second[2][2]);
 	void trasform(float inverseTransformation[2][2], int centreX = 0, int centreY = 0);
+	void Shuffle_Image();
 };
 
 // load image and merge it with current image
@@ -570,4 +571,62 @@ void Image::trasform(float transformation[2][2], int centreX, int centreY)
 	}
 	// copy the transfotmed image back
 	copyFrom(t);
+}
+void Image::Shuffle_Image()
+{
+ int input,Vertical,Vertical_Start,Horizontal,Horizontal_Start;
+ int LoopStartH=0;
+ int LoopStartV=0;
+ int Half=SIZE/2;
+ unsigned char image2[SIZE][SIZE];
+ cout<<"please enter the order of quarters";
+ for(int i =0;i<4;i++)
+ {
+	switch(i)
+	{
+		case 0:
+		LoopStartH=0;
+		LoopStartV=0;
+		 break;
+		case 1:
+		LoopStartH=Half;
+		LoopStartV=0;
+		 break;
+		case 2:
+		LoopStartH=0;
+		LoopStartV=Half;
+		 break;
+		case 3:
+		LoopStartH=Half;
+		LoopStartV=Half;
+		 break;
+	}
+	cin>>input;
+	switch(input)
+	{
+		case 1:
+		Horizontal_Start=0;
+		Vertical_Start=0;
+		 break;
+		case 2:
+		Horizontal_Start=Half;
+		Vertical_Start=0;
+		 break;
+		case 3:
+		Horizontal_Start=0;
+		Vertical_Start=Half;
+		 break;
+		case 4:
+		Horizontal_Start=Half;
+		Vertical_Start=Half;
+		 break;
+	}
+	for(int j=0;j<Half;j++)
+		{
+			for(int k=0;k<Half;k++){
+				image2[LoopStartH+j][LoopStartV+k]=image[Horizontal_Start+j][Vertical_Start+k];
+			}
+		}
+ }
+ copyFrom(image2);
 }
