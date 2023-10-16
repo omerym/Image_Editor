@@ -3,7 +3,8 @@
 #
 
 # Add source to this project's executable.
-add_executable (Assignment "Assignment.cpp"   )
+#add_executable (Assignment "CS213-2023-20220799-20220837-20220703-A1-FULL.cpp")
+add_executable (Assignment "CS213-2023-20220799-20220837-20220703-A1-Bonus.cpp")
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)
   set_property(TARGET Assignment PROPERTY CXX_STANDARD 20)

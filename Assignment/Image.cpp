@@ -1,19 +1,4 @@
-﻿/*
-FCAI – OOP Programming – 2023 - Assignment 1
-Program Name: Assignment.cpp
-Last Modification Date: 10/10/2023
-Author1 and ID and Group: Omer Yassir 20200799 - omerym10@gmail.com
-Author2 and ID and Group: Bashar Abdalla 20220837 - basharabdallha@gmail.com
-Author3 and ID and Group: Omar Sallah 20220703 - sd.omar04@gmail.com
-Teaching Assistant: xxxxx xxxxx
-Purpose:..........
-
-*/
-
 #include <iostream>
-#include <string>
-#include <cstring>
-#include <math.h>
 #include "bmplib.cpp"
 using namespace std;
 class Image
@@ -47,176 +32,6 @@ public:
 	void combineTransformations(float output[2][2], float first[2][2], float second[2][2]);
 	void trasform(float inverseTransformation[2][2], int centreX = 0, int centreY = 0);
 };
-
-int load(unsigned char image[][SIZE]);
-void save(unsigned char image[][SIZE]);
-int main()
-{
-	Image image;
-	cout << "welcome,\n";
-	cout << "Enter filename: ";
-	// get filename from user and load it, if file does not exist try again.
-	while (load(image.image));
-	image.detectEdgesT();
-	bool running = true;
-	while (running)
-	{
-		cout << "Please select a filter to apply or 0 to exit:\n";
-		cout << "1-	Black & White Filter\n"
-			<< "2-	Invert Filter\n"
-			<< "3-	Merge Filter\n"
-			<< "4-	Flip Image\n"
-			<< "5-	Darken and Lighten Image\n"
-			<< "6-	Rotate Image\n"
-			<< "7-	Detect Image Edges\n"
-			<< "8-	Enlarge Image\n"
-			<< "9-	Shrink Image\n"
-			<< "a-	Mirror 1/2 Image\n"
-			<< "b-	Shuffle Image\n"
-			<< "c-	Blur Image\n"
-			<< "d-	Crop Image\n"
-			<< "e-	Skew Image Right\n"
-			<< "f-	Skew Image Up\n"
-			<< "s-  Save the image to a file\n"
-			<< "0-	Exit\n";
-		// get operation code
-		char operation_code;
-		cin >> operation_code;
-		switch (operation_code)
-		{
-		case '0':
-			//exit the loop
-			running = false;
-			break;
-		case '1':
-			cout << "Black and White filter applied\n";
-			image.toBlackWhite();
-			break;
-		case '2':
-			image.invert();
-			break;
-		case '3':
-			unsigned char other[SIZE][SIZE];
-			while (load(other));
-			image.merge(other);
-			break;
-		case '4':
-			cout<<"Flip (h)orizontally or (v)ertically ?\n";
-			image.flip();
-			break;
-		case '5':
-		{
-			cout << "Do you want to (d)arken or (l)ighten?: ";
-			char input;
-			cin >> input;
-			float factor = input == 'd' ? 0.5 : input == 'l' ? 1.5 : 0;
-			image.lighten(factor);
-			break;
-		}
-		case '6':
-		{
-			cout << "Enter degrees of rotation(90,180,270): ";
-			float degree;
-			cin >> degree;
-			image.rotate(degree);
-			break;
-		}
-		case '7':
-			cout << "Appling Detect Image Edges\n";
-			image.detectEdges();
-			cout << "Detect Image Edges applied\n";
-			break;
-		case '8':
-			image.enlarge();
-			cout << "Filter Applied\n";
-			break;
-		case '9':
-		{
-			cout << "Enter shrink factor.(2,3,4...):  ";
-			int factor;
-			cin >> factor;
-			image.shrink(factor);
-			break;
-		}
-		case 'a':
-			cout<<"Mirror (l)eft, (r)ight, (u)pper, (d)own side: ";
-			image.mirror();
-			break;
-		case 'b':
-			cout << "Work in progress\n";
-			break;
-		case 'c':
-			image.blur
-			();
-			break;
-		case 'd':
-		{
-			int x, y, w, l;
-			cout << "Please enter crop position (x,y)";
-			cin >> x >> y;
-			cout << "Please enter crop dimensions (w,l)";
-			cin >> w >> l;
-			image.crop(x,y,w,l);
-			break;
-		}
-		case 'e':
-		{
-			cout << "Please enter degree to skew right:";
-			float deg;
-			cin >> deg;
-			image.skewRight(deg);
-			break;
-		}
-		case 'f':
-		{
-			cout << "Please enter degree to skew up:";
-			float deg;
-			cin >> deg;
-			image.skewUp( deg);
-			break;
-		}
-		case 's':
-			save(image.image);
-			break;
-		// if operation code does not match any defined operation 
-		default:
-			cout << "Invalid input!\n";
-			break;
-		}
-	}
-	return 0;
-}
-
-
-
-
-
-// load image from file
-int load(unsigned char image[][SIZE]) {
-	char imageFileName[100];
-
-	// Get gray scale image file name
-	cout << "Enter the source image file name: ";
-	cin >> imageFileName;
-
-	// Add to it .bmp extension and load image
-	strcat(imageFileName, ".bmp");
-	return readGSBMP(imageFileName, image);
-}
-
-// save image to file
-void save(unsigned char image[][SIZE]) {
-	char imageFileName[100];
-
-	// Get gray scale image target file name
-	cout << "Enter the target image file name: ";
-	cin >> imageFileName;
-
-	// Add to it .bmp extension and load image
-	strcat(imageFileName, ".bmp");
-	writeGSBMP(imageFileName, image);
-}
-
 
 // load image and merge it with current image
 void Image::merge(unsigned char other[SIZE][SIZE])
@@ -390,7 +205,7 @@ void Image::flip() {
 	}
 	copyFrom(image2);
 }
-void Image::crop(int x,int y,int w, int l) {
+void Image::crop(int x, int y, int w, int l) {
 	for (int i = 0; i < SIZE; i++)
 	{
 		for (int j = 0; j < SIZE; j++)
@@ -404,18 +219,18 @@ void Image::crop(int x,int y,int w, int l) {
 		}
 	}
 }
-void Image::toBlackWhite(int threshold,bool inverted) {
+void Image::toBlackWhite(int threshold, bool inverted) {
 	for (int i = 0; i < SIZE; i++)
 	{
 		for (int j = 0; j < SIZE; j++)
 		{
 			if (image[i][j] < threshold)
 			{
-				image[i][j] = inverted? 255 : 0;
+				image[i][j] = inverted ? 255 : 0;
 			}
 			else
 			{
-				image[i][j] = inverted? 0 : 255;
+				image[i][j] = inverted ? 0 : 255;
 			}
 		}
 	}
@@ -430,9 +245,9 @@ void Image::getSobelX(int result[SIZE][SIZE])
 	{
 		for (int i = 0; i < SIZE; i++)
 		{
-			result[i][j] = 
-			-getPixelSafe(i - 1,j + 1) - 2 * getPixelSafe(i - 1,j) -getPixelSafe(i - 1,j - 1)
-				+ getPixelSafe(i + 1,j + 1) + 2 * getPixelSafe(i + 1,j) + getPixelSafe(i + 1, j - 1);
+			result[i][j] =
+				-getPixelSafe(i - 1, j + 1) - 2 * getPixelSafe(i - 1, j) - getPixelSafe(i - 1, j - 1)
+				+ getPixelSafe(i + 1, j + 1) + 2 * getPixelSafe(i + 1, j) + getPixelSafe(i + 1, j - 1);
 		}
 	}
 }
@@ -445,7 +260,7 @@ void Image::getSobelY(int result[SIZE][SIZE])
 		{
 			result[i][j] =
 				getPixelSafe(i - 1, j + 1) + 2 * getPixelSafe(i, j + 1) + getPixelSafe(i + 1, j + 1)
-				- getPixelSafe(i - 1, j - 1) - 2 * getPixelSafe(i, j - 1) -  getPixelSafe(i + 1, j - 1);
+				- getPixelSafe(i - 1, j - 1) - 2 * getPixelSafe(i, j - 1) - getPixelSafe(i + 1, j - 1);
 		}
 	}
 }
@@ -482,7 +297,7 @@ void Image::detectEdges() {
 	{
 		for (int i = 2; i <= SIZE - 2; i++)
 		{
-                        //Horizontal Kernal.
+			//Horizontal Kernal.
 			changeH =
 				-1 * image[i - 1][j + 1] - 2 * image[i - 1][j] - 1 * image[i - 1][j - 1]
 				+ 0 * image[i][j - 1] + 0 * image[i][j] + 0 * image[i][j + 1]
@@ -501,13 +316,13 @@ void Image::detectEdges() {
 	{
 		for (int i = 0; i < SIZE; i++)
 		{
-			if(image2[i][j]> average)
+			if (image2[i][j] > average)
 			{
 				image[i][j] = 0;
 			}
 			else
 			{
-				image[i][j]=255;
+				image[i][j] = 255;
 			}
 		}
 	}
@@ -518,13 +333,13 @@ void Image::rotate(float degree)
 	//degree to radian
 	degree *= -3.14 / 180;
 	float rotation[2][2] = { {cos(degree),sin(degree)},
-							 {-sin(degree),cos(degree)}};
+							 {-sin(degree),cos(degree)} };
 	trasform(rotation, SIZE / 2, SIZE / 2);
 }
 
 void Image::blur(int s)
 {
-	float kernal[3][3] = {{1,2,1},
+	float kernal[3][3] = { {1,2,1},
 						  {2,4,2},
 						  {1,2,1}
 	};
@@ -536,7 +351,7 @@ void Image::blur(int s)
 void Image::applyKernal(float kernal[3][3])
 {
 	unsigned char t[SIZE][SIZE];
-	for (int i = 0; i < SIZE;i++)
+	for (int i = 0; i < SIZE; i++)
 	{
 		for (int j = 0; j < SIZE; j++)
 		{
@@ -554,7 +369,7 @@ unsigned char Image::getPixelByKernal(float kernal[3][3], int x, int y)
 		for (int j = 0; j < 3; j++)
 		{
 			weightSum += kernal[i][j];
-			pixel += kernal[i][j] * getPixelSafe(x + i - 1,y + j - 1);
+			pixel += kernal[i][j] * getPixelSafe(x + i - 1, y + j - 1);
 		}
 	}
 	weightSum = weightSum != 0 ? weightSum : 1;
@@ -703,7 +518,7 @@ void Image::skewUp(float degree)
 	float scalerMatrix[2][2] = { { scale,0},
 					{0,1} };
 	combineTransformations(transformation, skewMatrix, scalerMatrix);
-	trasform(transformation,0, SIZE - 1);
+	trasform(transformation, 0, SIZE - 1);
 }
 void Image::skewRight(float degree)
 {
@@ -714,7 +529,7 @@ void Image::skewRight(float degree)
 	float scalerMatrix[2][2] = { { 1,0},
 					{0,scale} };
 	combineTransformations(transformation, skewMatrix, scalerMatrix);
-	trasform(transformation,SIZE - 1);
+	trasform(transformation, SIZE - 1);
 }
 // combine two linear transformations ORDER IS IMPORTANT!
 void Image::combineTransformations(float output[2][2], float first[2][2], float second[2][2])
