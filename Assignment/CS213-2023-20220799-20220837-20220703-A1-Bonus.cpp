@@ -254,6 +254,7 @@ void blur()
 	}
 	fromGSArray(t);
 }
+<<<<<<< HEAD
 void toBlackWhite()
 {
 	Image t[RGB];
@@ -274,3 +275,5 @@ void toBlackWhite()
 	}
 	fromGSArray(t);
 }
+=======
+>>>>>>> 5a6a3bb49fa138df8ea74960591c3ceef0ac505c
