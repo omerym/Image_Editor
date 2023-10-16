@@ -20,6 +20,8 @@ public:
 	void toBlackWhite(bool inverted = false);
 	void getSobelX(int result[SIZE][SIZE]);
 	void getSobelY(int result[SIZE][SIZE]);
+	void getSobelX(int *result);
+	void getSobelY(int *result);
 	void detectEdges();
 	void rotate(float degree);
 	void blur(int s = 1);
@@ -259,6 +261,32 @@ void Image::getSobelY(int result[SIZE][SIZE])
 		for (int i = 0; i < SIZE; i++)
 		{
 			result[i][j] =
+				getPixelSafe(i - 1, j + 1) + 2 * getPixelSafe(i, j + 1) + getPixelSafe(i + 1, j + 1)
+				- getPixelSafe(i - 1, j - 1) - 2 * getPixelSafe(i, j - 1) - getPixelSafe(i + 1, j - 1);
+		}
+	}
+}
+
+void Image::getSobelX(int *result)
+{
+	for (int j = 0; j < SIZE; j++)
+	{
+		for (int i = 0; i < SIZE; i++)
+		{
+			result[i * SIZE + j] =
+				-getPixelSafe(i - 1, j + 1) - 2 * getPixelSafe(i - 1, j) - getPixelSafe(i - 1, j - 1)
+				+ getPixelSafe(i + 1, j + 1) + 2 * getPixelSafe(i + 1, j) + getPixelSafe(i + 1, j - 1);
+		}
+	}
+}
+
+void Image::getSobelY(int *result)
+{
+	for (int j = 0; j < SIZE; j++)
+	{
+		for (int i = 0; i < SIZE; i++)
+		{
+			result[i * SIZE + j] =
 				getPixelSafe(i - 1, j + 1) + 2 * getPixelSafe(i, j + 1) + getPixelSafe(i + 1, j + 1)
 				- getPixelSafe(i - 1, j - 1) - 2 * getPixelSafe(i, j - 1) - getPixelSafe(i + 1, j - 1);
 		}

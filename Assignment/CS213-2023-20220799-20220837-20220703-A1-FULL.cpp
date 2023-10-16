@@ -111,7 +111,7 @@ int main()
 			image.mirror();
 			break;
 		case 'b':
-			cout << "Work in progress\n";
+			image.Shuffle_Image();
 			break;
 		case 'c':
 			image.blur
