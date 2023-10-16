@@ -14,7 +14,7 @@ public:
 	void lighten(float factor);
 	void invert();
 	void shrink(int factor);
-	void mirror();
+	void mirror(char Mirror_input);
 	void flip(char Flip_Image_Input);
 	void crop(int x, int y, int w, int l);
 	void toBlackWhite(int threshold, bool inverted = false);
@@ -129,12 +129,8 @@ void Image::shrink(int factor)
 		}
 	}
 }
-void Image::mirror()
+void Image::mirror(char Mirror_input)
 {
-	char Mirror_input;
-	int Switch_Var1;
-	int Switch_Var2;
-	cin >> Mirror_input;
 	switch (Mirror_input) {
 	case 'r':
 		for (int i = 0; i < SIZE; i++)
@@ -144,7 +140,6 @@ void Image::mirror()
 				image[i][j] = image[i][SIZE - j];
 			}
 		}
-		cout << "Effect Applied Successfully\n";
 		break;
 	case 'd':
 		for (int i = 0; i < SIZE; i++)
@@ -154,7 +149,6 @@ void Image::mirror()
 				image[i][j] = image[SIZE - i][j];
 			}
 		}
-		cout << "Effect Applied Successfully\n";
 		break;
 	case 'l':
 		for (int i = 0; i < SIZE; i++)
@@ -164,7 +158,6 @@ void Image::mirror()
 				image[i][SIZE - j] = image[i][j];
 			}
 		}
-		cout << "Effect Applied Successfully\n";
 		break;
 	case 'u':
 		for (int i = 0; i < SIZE; i++)
@@ -174,10 +167,6 @@ void Image::mirror()
 				image[SIZE - i][j] = image[i][j];
 			}
 		}
-		cout << "Effect Applied Successfully\n";
-		break;
-	default:
-		cout << "Invalid Input\n";
 		break;
 	}
 }

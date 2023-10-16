@@ -110,7 +110,9 @@ int main()
 		}
 		case 'a':
 			cout<<"Mirror (l)eft, (r)ight, (u)pper, (d)own side: ";
-			image.mirror();
+			char Mirror_input;
+			cin>> Mirror_input;
+			image.mirror(Mirror_input);
 			break;
 		case 'b':
 		cout << "please enter the order of quarters\n";

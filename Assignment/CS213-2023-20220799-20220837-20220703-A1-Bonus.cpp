@@ -32,6 +32,7 @@ void invert();
 void crop(int x,int y, int w, int l);
 void flip(char Flip_Image_Input);
 void Shuffle_Image(int input[4]);
+void mirror(char Mirror_input);
 unsigned char image[SIZE][SIZE][RGB];
 int main()
 {
@@ -118,6 +119,10 @@ int main()
 		}
 		case 'a':
 			cout<<"Mirror (l)eft, (r)ight, (u)pper, (d)own side: ";
+			char Mirror_input;
+			cin >> Mirror_input;
+			mirror(Mirror_input);
+			cout << "Effect Applied Successfully\n";
 			break;
 		case 'b':
 			cout << "please enter the order of quarters\n";
@@ -379,6 +384,16 @@ void Shuffle_Image(int input[4])
 	for(int c =0;c<RGB;c++)
 		{
 			t[c].Shuffle_Image(input);
+		}
+	fromGSArray(t);
+}
+void mirror(char Mirror_input)
+{
+	Image t[RGB];
+	toGSArray(t);
+	for(int c =0;c<RGB;c++)
+		{
+			t[c].mirror(Mirror_input);
 		}
 	fromGSArray(t);
 }
