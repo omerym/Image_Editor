@@ -29,6 +29,7 @@ void skewUp(float deg);
 void skewRight(float deg);
 void lighten(float factor);
 void invert();
+void crop(int x,int y, int w, int l);
 unsigned char image[SIZE][SIZE][RGB];
 int main()
 {
@@ -126,6 +127,7 @@ int main()
 			cin >> x >> y;
 			cout << "Please enter crop dimensions (w,l)";
 			cin >> w >> l;
+			crop(x,y,w,l);
 			break;
 		}
 		case 'e':
@@ -337,5 +339,15 @@ void lighten(float factor)
 	{
 		t[c].lighten(average, factor);
 	}
+	fromGSArray(t);
+}
+void crop(int x, int y, int w, int l)
+{
+	Image t[RGB];
+	toGSArray(t);
+	for(int c =0;c<RGB;c++)
+		{
+			t[c].crop(x,y,w,l);
+		}
 	fromGSArray(t);
 }

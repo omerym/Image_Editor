@@ -216,7 +216,7 @@ void Image::crop(int x, int y, int w, int l) {
 		for (int j = 0; j < SIZE; j++)
 		{
 			// check if pixel is outside specified boundry
-			if (i < x || i >= x + w || i < y || i >= y + l)
+			if (i < x || i >= x + w ||j < y || j >= y + l)
 			{
 				// set pixel to maximum value (white)
 				image[i][j] = 255;
