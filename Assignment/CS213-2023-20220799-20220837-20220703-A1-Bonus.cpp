@@ -253,13 +253,3 @@ void blur()
 	}
 	fromGSArray(t);
 }
-void Shuffle_image()
-{
-	Image t[RGB];
-	toGSArray;
-	for(int c=0;c<RGB;c++)
-		{
-			t[c].Shuffle_Image();
-		}
-	fromGSArray(t);
-}
