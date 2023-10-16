@@ -30,6 +30,7 @@ void skewRight(float deg);
 void lighten(float factor);
 void invert();
 void crop(int x,int y, int w, int l);
+void flip(char Flip_Image_Input);
 unsigned char image[SIZE][SIZE][RGB];
 int main()
 {
@@ -79,6 +80,9 @@ int main()
 			break;
 		case '4':
 			cout<<"Flip (h)orizontally or (v)ertically ?\n";
+			char Flip_Image_Input;
+			cin >> Flip_Image_Input;
+			flip(Flip_Image_Input);
 			break;
 		case '5':
 		{
@@ -348,6 +352,16 @@ void crop(int x, int y, int w, int l)
 	for(int c =0;c<RGB;c++)
 		{
 			t[c].crop(x,y,w,l);
+		}
+	fromGSArray(t);
+}
+void flip(char Flip_Image_Input)
+{
+	Image t[RGB];
+	toGSArray(t);
+	for(int c =0;c<RGB;c++)
+		{
+			t[c].flip(Flip_Image_Input);
 		}
 	fromGSArray(t);
 }

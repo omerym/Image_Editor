@@ -70,7 +70,9 @@ int main()
 			break;
 		case '4':
 			cout<<"Flip (h)orizontally or (v)ertically ?\n";
-			image.flip();
+			char Flip_Image_Input;
+			cin >> Flip_Image_Input;
+			image.flip(Flip_Image_Input);
 			break;
 		case '5':
 		{

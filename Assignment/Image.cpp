@@ -15,7 +15,7 @@ public:
 	void invert();
 	void shrink(int factor);
 	void mirror();
-	void flip();
+	void flip(char Flip_Image_Input);
 	void crop(int x, int y, int w, int l);
 	void toBlackWhite(int threshold, bool inverted = false);
 	void toBlackWhite(bool inverted = false);
@@ -181,10 +181,9 @@ void Image::mirror()
 		break;
 	}
 }
-void Image::flip() {
-	char Flip_Image_Input;
+void Image::flip(char Flip_Image_Input) {
+	;
 	unsigned char image2[SIZE][SIZE];
-	cin >> Flip_Image_Input;
 	switch (Flip_Image_Input) {
 	case 'h':
 		for (int i = 0; i < SIZE; i++)
