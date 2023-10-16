@@ -23,7 +23,8 @@ void toGSArray(Image to[RGB]);
 void fromGSArray(Image from[RGB]);
 void detectEdges();
 void blur();
-void Shuffle_Image();
+void toBlackWhite();
+void invert();
 unsigned char image[SIZE][SIZE][RGB];
 int main()
 {
@@ -63,6 +64,7 @@ int main()
 			break;
 		case '1':
 			cout << "Black and White filter applied\n";
+			toBlackWhite();
 			break;
 		case '2':
 			break;
@@ -108,7 +110,6 @@ int main()
 			break;
 		case 'b':
 			cout << "Work in progress\n";
-			Shuffle_Image();
 			break;
 		case 'c':
 			blur();
@@ -253,13 +254,23 @@ void blur()
 	}
 	fromGSArray(t);
 }
-void Shuffle_image()
+void toBlackWhite()
 {
 	Image t[RGB];
-	toGSArray;
-	for(int c=0;c<RGB;c++)
+	int temp;
+	for (int i = 0; i < SIZE; i++)
+	{
+		for (int j = 0; j < SIZE; j++)
 		{
-			t[c].Shuffle_Image();
+			for (int color = 0; color < RGB; color++)
+			{
+				temp = image[i][j][color]/3;
+			}
+			for (int color = 0; color < RGB; color++)
+			{
+				t[color].image[i][j] = temp/3;
+			}
 		}
+	}
 	fromGSArray(t);
 }
