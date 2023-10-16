@@ -254,7 +254,7 @@ void blur()
 	}
 	fromGSArray(t);
 }
-<<<<<<< HEAD
+
 void toBlackWhite()
 {
 	Image t[RGB];
@@ -263,17 +263,22 @@ void toBlackWhite()
 	{
 		for (int j = 0; j < SIZE; j++)
 		{
+			//gray=0.299 * red + 0.587 * green+ 0.114 * blue
+			temp = image[i][j][0]*0.299 + image[i][j][1]*0.587 + image[i][j][2]*0.114;
+			
+			if(temp<127)
+				{
+					temp=0;
+				}
+			else
+				{
+					temp=255;
+				}
 			for (int color = 0; color < RGB; color++)
 			{
-				temp = image[i][j][color]/3;
-			}
-			for (int color = 0; color < RGB; color++)
-			{
-				t[color].image[i][j] = temp/3;
+				t[color].image[i][j] = temp;
 			}
 		}
 	}
 	fromGSArray(t);
 }
-=======
->>>>>>> 5a6a3bb49fa138df8ea74960591c3ceef0ac505c
