@@ -33,7 +33,7 @@ public:
 	void skewRight(float degree);
 	void combineTransformations(float output[2][2], float first[2][2], float second[2][2]);
 	void trasform(float inverseTransformation[2][2], int centreX = 0, int centreY = 0);
-	void Shuffle_Image();
+	void Shuffle_Image(int input[4]);
 };
 
 // load image and merge it with current image
@@ -559,9 +559,9 @@ void Image::trasform(float transformation[2][2], int centreX, int centreY)
 	// copy the transfotmed image back
 	copyFrom(t);
 }
-void Image::Shuffle_Image()
+void Image::Shuffle_Image(int input [4])
 {
- int input,Vertical,Vertical_Start,Horizontal,Horizontal_Start;
+int Vertical,Vertical_Start,Horizontal,Horizontal_Start;
  int LoopStartH=0;
  int LoopStartV=0;
  int Half=SIZE/2;
@@ -588,8 +588,7 @@ void Image::Shuffle_Image()
 		LoopStartV=Half;
 		 break;
 	}
-	cin>>input;
-	switch(input)
+	switch(input[i])
 	{
 		case 1:
 		Horizontal_Start=0;

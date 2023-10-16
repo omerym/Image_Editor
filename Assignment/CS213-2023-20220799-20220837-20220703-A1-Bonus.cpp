@@ -31,6 +31,7 @@ void lighten(float factor);
 void invert();
 void crop(int x,int y, int w, int l);
 void flip(char Flip_Image_Input);
+void Shuffle_Image(int input[4]);
 unsigned char image[SIZE][SIZE][RGB];
 int main()
 {
@@ -119,7 +120,13 @@ int main()
 			cout<<"Mirror (l)eft, (r)ight, (u)pper, (d)own side: ";
 			break;
 		case 'b':
-			cout << "Work in progress\n";
+			cout << "please enter the order of quarters\n";
+			int input[4];
+			for(int i =0;i<4;i++)
+				{
+					cin>>input[i];
+				}
+			Shuffle_Image(input);
 			break;
 		case 'c':
 			blur();
@@ -362,6 +369,16 @@ void flip(char Flip_Image_Input)
 	for(int c =0;c<RGB;c++)
 		{
 			t[c].flip(Flip_Image_Input);
+		}
+	fromGSArray(t);
+}
+void Shuffle_Image(int input[4])
+{
+	Image t[RGB];
+	toGSArray(t);
+	for(int c =0;c<RGB;c++)
+		{
+			t[c].Shuffle_Image(input);
 		}
 	fromGSArray(t);
 }

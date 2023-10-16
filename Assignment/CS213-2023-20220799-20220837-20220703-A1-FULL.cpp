@@ -113,7 +113,13 @@ int main()
 			image.mirror();
 			break;
 		case 'b':
-			image.Shuffle_Image();
+		cout << "please enter the order of quarters\n";
+		int input[4];
+			for(int i =0;i<4;i++)
+				{
+					cin>>input[i];
+				}
+			image.Shuffle_Image(input);
 			break;
 		case 'c':
 			image.blur
