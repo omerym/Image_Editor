@@ -75,6 +75,8 @@ int main()
 			toBlackWhite();
 			break;
 		case '2':
+		   cout<<"apply invert";
+		    invert();
 			break;
 		case '3':
 			unsigned char other[SIZE][SIZE][RGB];
@@ -394,6 +396,16 @@ void mirror(char Mirror_input)
 	for(int c =0;c<RGB;c++)
 		{
 			t[c].mirror(Mirror_input);
+		}
+	fromGSArray(t);
+}
+void invert()
+{
+	Image t[RGB];
+	toGSArray(t);
+	for(int c =0;c<RGB;c++)
+		{
+			t[c].invert();
 		}
 	fromGSArray(t);
 }
