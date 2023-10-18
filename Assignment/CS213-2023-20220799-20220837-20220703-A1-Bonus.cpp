@@ -104,7 +104,7 @@ int main()
 			cout << "Enter degrees of rotation(90,180,270): ";
 			float degree;
 			cin >> degree;
-			
+			rotate(degree);
 			break;
 		}
 		case '7':
@@ -421,6 +421,16 @@ void invert()
 		{
 			t[c].invert();
 		}
+	fromGSArray(t);
+}
+void rotate(float degree)
+{
+	Image t[RGB];
+	toGSArray(t);
+	for (int c = 0; c < RGB; c++)
+	{
+		t[c].rotate(degree);
+	}
 	fromGSArray(t);
 }
 void enlarge(){
