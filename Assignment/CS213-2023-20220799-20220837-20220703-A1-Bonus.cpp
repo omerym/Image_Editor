@@ -29,6 +29,8 @@ void skewUp(float deg);
 void skewRight(float deg);
 void lighten(float factor);
 void invert();
+void rotate(float degree);
+void enlarge();
 void crop(int x,int y, int w, int l);
 void flip(char Flip_Image_Input);
 void Shuffle_Image(int input[4]);
@@ -102,6 +104,7 @@ int main()
 			cout << "Enter degrees of rotation(90,180,270): ";
 			float degree;
 			cin >> degree;
+			
 			break;
 		}
 		case '7':
@@ -111,6 +114,7 @@ int main()
 			break;
 		case '8':
 			cout << "Filter Applied\n";
+			enlarge();
 			break;
 		case '9':
 		{
@@ -406,6 +410,15 @@ void invert()
 	for(int c =0;c<RGB;c++)
 		{
 			t[c].invert();
+		}
+	fromGSArray(t);
+}
+void enlarge(){
+	Image t[RGB];
+	toGSArray(t);
+	for(int c =0;c<RGB;c++)
+		{
+			t[c].enlarge();
 		}
 	fromGSArray(t);
 }
