@@ -179,7 +179,7 @@ void Image::flip(char Flip_Image_Input) {
 		{
 			for (int j = 0; j < SIZE; j++)
 			{
-				image2[i][j] = image[i][SIZE - j];
+				image2[i][j] = image[i][SIZE - j - 1];
 			}
 		}
 		break;
@@ -188,7 +188,7 @@ void Image::flip(char Flip_Image_Input) {
 		{
 			for (int j = 0; j < SIZE; j++)
 			{
-				image2[i][j] = image[SIZE - i][j];
+				image2[i][j] = image[SIZE - i - 1][j];
 			}
 		}
 		break;
