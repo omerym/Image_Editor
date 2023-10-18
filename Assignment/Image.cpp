@@ -487,7 +487,7 @@ void Image::trasform(float transformation[2][2], int centreX, int centreY)
 	{
 		for (int j = 0; j < SIZE; j++)
 		{
-			t[SIZE][SIZE] = SIZE - 1;
+			t[i][j] = 255;
 		}
 	}
 	// apply the transformation
