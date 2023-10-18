@@ -73,9 +73,11 @@ void Image::copyFrom(unsigned char other[SIZE][SIZE])
 }
 
 // multiply all pixels with a factor for darkening and lightening
+// factor > 1 to lighten and factor < 1 to darken
 void Image::lighten(int average,float factor)
 {
 	// calculate change in pixels based on average pixel
+	// how much to add to each pixel to increase the average by factor
 	float diff = average * factor - average;
 	for (int i = 0; i < SIZE; i++)
 	{
@@ -100,6 +102,7 @@ void Image::invert()
 	{
 		for (int j = 0; j < SIZE; j++)
 		{
+			// subtract each pixel from maximum value to invert it
 			image[i][j] = 255 - image[i][j];
 		}
 	}
@@ -212,6 +215,9 @@ void Image::crop(int x, int y, int w, int l) {
 		}
 	}
 }
+// convert image to black and white picture.
+// if a pixel > threshold it is converted to white otherwise black
+// if inverted is true the result will be inverted
 void Image::toBlackWhite(int threshold, bool inverted) {
 	for (int i = 0; i < SIZE; i++)
 	{
@@ -232,6 +238,8 @@ void Image::toBlackWhite(bool inverted)
 {
 	toBlackWhite(getAvarage(), inverted);
 }
+
+// get results from applying horizontal sobel kernal to image without changing it 
 void Image::getSobelX(int result[SIZE][SIZE])
 {
 	for (int j = 0; j < SIZE; j++)
@@ -245,6 +253,7 @@ void Image::getSobelX(int result[SIZE][SIZE])
 	}
 }
 
+// get results from applying vertical sobel kernal to image without changing it 
 void Image::getSobelY(int result[SIZE][SIZE])
 {
 	for (int j = 0; j < SIZE; j++)
@@ -258,6 +267,7 @@ void Image::getSobelY(int result[SIZE][SIZE])
 	}
 }
 
+// get results from applying horizontal sobel kernal to image without changing it 
 void Image::getSobelX(int *result)
 {
 	for (int j = 0; j < SIZE; j++)
@@ -271,6 +281,7 @@ void Image::getSobelX(int *result)
 	}
 }
 
+// get results from applying vertical sobel kernal to image without changing it 
 void Image::getSobelY(int *result)
 {
 	for (int j = 0; j < SIZE; j++)
@@ -283,13 +294,17 @@ void Image::getSobelY(int *result)
 		}
 	}
 }
+
+// detect edges of image and change it to an outline image
 void Image::detectEdges()
 {
 	// blur image before detecting edges to reduce noise effect
 	blur();
 	int changeH[SIZE][SIZE];
 	int changeV[SIZE][SIZE];
+	// pre calculate the avarege pixel before changing image
 	int average = getAvarage();
+	// get gradiants in each direction using sobel kernal
 	getSobelX(changeH);
 	getSobelY(changeV);
 	for (int i = 0; i < SIZE; i++)
@@ -298,7 +313,9 @@ void Image::detectEdges()
 		{
 			int ch = changeH[i][j];
 			int cv = changeV[i][j];
+			// combine horizontal and vertical gradiants
 			int grad = sqrt(ch * ch + cv * cv);
+			// clamp the value at 255
 			grad = grad < 255 ? grad : 255;
 			image[i][j] = grad;
 		}
@@ -309,13 +326,16 @@ void Image::rotate(float degree)
 {
 	//degree to radian
 	degree *= -3.14 / 180;
+	// transformation matrix for rotation
 	float rotation[2][2] = { {cos(degree),sin(degree)},
 							 {-sin(degree),cos(degree)} };
 	trasform(rotation, SIZE / 2, SIZE / 2);
 }
 
+// s is used to repeat the blur effect to get stronger blur
 void Image::blur(int s)
 {
+	// kernal for gaussian blur
 	float kernal[3][3] = { {1,2,1},
 						  {2,4,2},
 						  {1,2,1}
@@ -325,6 +345,8 @@ void Image::blur(int s)
 		applyKernal(kernal);
 	}
 }
+
+// apply any 3 * 3 kernal to image
 void Image::applyKernal(float kernal[3][3])
 {
 	unsigned char t[SIZE][SIZE];
@@ -337,6 +359,8 @@ void Image::applyKernal(float kernal[3][3])
 	}
 	copyFrom(t);
 }
+
+// gets a pixel's new value based on kernal
 unsigned char Image::getPixelByKernal(float kernal[3][3], int x, int y)
 {
 	float weightSum = 0;
@@ -351,6 +375,7 @@ unsigned char Image::getPixelByKernal(float kernal[3][3], int x, int y)
 	}
 	weightSum = weightSum != 0 ? weightSum : 1;
 	pixel /= weightSum;
+	// clamp the pixel's value between 0 and 255
 	pixel = pixel > 0 ? pixel : 0;
 	pixel = pixel < 255 ? pixel : 255;
 	return pixel;
@@ -364,26 +389,36 @@ unsigned char Image::getPixelSafe(int i, int j)
 	j = j < SIZE ? j : SIZE - 1;
 	return image[i][j];
 }
+// enlarge a quarter of the image
 void Image::enlarge(int quarter) {
 	if (quarter < 1 || quarter > 4)
 	{
 		cout << "Invalid Quarter!";
 		return;
 	}
+	// change quarter to start on 0 instead of 1
 	quarter--;
 	const int HALF = SIZE / 2;
+	// copy the desired quarter to an array
 	unsigned char imageQuarter[HALF][HALF];
 	for (int i = 0; i < HALF; i++)
 	{
 		for (int j = 0; j < HALF; j++)
 		{
+			/*
+			 quarter / 2 == 1 for 3rd and 4th quarters
+			 quarter % 2 == 1 for 2nd and 4th quarters
+			 the 1st quarter corresponds to quarter == 0
+			*/
 			imageQuarter[i][j] = image[i + (quarter / 2 * HALF)][j + ((quarter % 2) * HALF)];
 		}
 	}
+	// copy the desired quarter to the original image
 	for (int i = 0; i < SIZE; i++)
 	{
 		for (int j = 0; j < SIZE; j++)
 		{
+			// four pixels will be copied from the same pixel resulting in an enlarged image
 			image[i][j] = imageQuarter[i / 2][j / 2];
 		}
 	}
@@ -404,23 +439,33 @@ int Image::getAvarage()
 
 void Image::skewUp(float degree)
 {
+	// the scale needed to make the skewed image fit in 255 pixels
 	float scale = 1 / (1 + tan(degree * 3.14 / 180));
 	float transformation[2][2];
+	//transformation matrix to skew an image
 	float skewMatrix[2][2] = { { 1,0},
 						{tan(-degree * 3.14 / 180),1} };
+	// trtransformation matrix to scale an image
 	float scalerMatrix[2][2] = { { scale,0},
 					{0,1} };
+	// combine scale and skew matrices into single matrix
+	// the combined matrix have the effect of skewing first then scaling
 	combineTransformations(transformation, skewMatrix, scalerMatrix);
 	trasform(transformation, 0, SIZE - 1);
 }
 void Image::skewRight(float degree)
 {
+	// the scale needed to make the skewed image fit in 255 pixels
 	float scale = 1 / (1 + tan(degree * 3.14 / 180));
 	float transformation[2][2];
+	//transformation matrix to skew an image
 	float skewMatrix[2][2] = { { 1,tan(-degree * 3.14 / 180)},
 						{0,1} };
+	// trtransformation matrix to scale an image
 	float scalerMatrix[2][2] = { { 1,0},
 					{0,scale} };
+	// combine scale and skew matrices into single matrix
+	// the combined matrix have the effect of skewing first then scaling
 	combineTransformations(transformation, skewMatrix, scalerMatrix);
 	trasform(transformation, SIZE - 1);
 }
