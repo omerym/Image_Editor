@@ -114,27 +114,6 @@ void Image::shrink(float factor)
 	float scalerMatrix[2][2] = { { 1.0 / factor,0},
 				{0,1.0 / factor} };
 	trasform(scalerMatrix);
-	return;
-	// Draw shrunk image on top left corner
-	for (int i = 0; i * factor < SIZE; i++)
-	{
-		for (int j = 0; j * factor < SIZE; j++)
-		{
-			image[i][j] = image[(int)(i * factor)][(int)(j * factor)];
-		}
-	}
-
-	// Set pixeles outside image boundries to white.
-	for (int i = 0; i < SIZE; i++)
-	{
-		for (int j = 0; j < SIZE; j++)
-		{
-			if (i * factor >= SIZE || j * factor >= SIZE)
-			{
-				image[i][j] = 255;
-			}
-		}
-	}
 }
 void Image::mirror(char Mirror_input)
 {
