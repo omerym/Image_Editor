@@ -19,6 +19,7 @@ using namespace std;
 
 int load(unsigned char image[][SIZE][RGB]);
 void save(unsigned char image[][SIZE][RGB]);
+void merge(unsigned char other[SIZE][SIZE][RGB]);
 void toGSArray(Image to[RGB]);
 void fromGSArray(Image from[RGB]);
 void detectEdges();
@@ -73,16 +74,15 @@ int main()
 			running = false;
 			break;
 		case '1':
-			cout << "Black and White filter applied\n";
 			toBlackWhite();
 			break;
 		case '2':
-		   cout<<"apply invert";
 		    invert();
 			break;
 		case '3':
 			unsigned char other[SIZE][SIZE][RGB];
 			while (load(other));
+			merge(other);
 			break;
 		case '4':
 			cout<<"Flip (h)orizontally or (v)ertically ?\n";
@@ -108,12 +108,9 @@ int main()
 			break;
 		}
 		case '7':
-			cout << "Appling Detect Image Edges\n";
 			detectEdges();
-			cout << "Detect Image Edges applied\n";
 			break;
 		case '8':
-			cout << "Filter Applied\n";
 			enlarge();
 			break;
 		case '9':
@@ -128,7 +125,6 @@ int main()
 			char Mirror_input;
 			cin >> Mirror_input;
 			mirror(Mirror_input);
-			cout << "Effect Applied Successfully\n";
 			break;
 		case 'b':
 			cout << "please enter the order of quarters\n";
@@ -203,6 +199,20 @@ void save(unsigned char image[][SIZE][RGB]) {
 	// Add to it .bmp extension and load image
 	strcat(imageFileName, ".bmp");
 	writeRGBBMP(imageFileName, image);
+}
+
+void merge(unsigned char other[SIZE][SIZE][RGB])
+{
+	for (int i = 0; i < SIZE; i++)
+	{
+		for (int j = 0; j < SIZE; j++)
+		{
+			for (int c = 0; c < RGB; c++)
+			{
+				image[i][j][c] = (other[i][j][c] + image[i][j][c]) / 2;
+			}
+		}
+	}
 }
 
 void toGSArray(Image to[RGB])
