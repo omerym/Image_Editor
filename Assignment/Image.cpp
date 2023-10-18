@@ -13,7 +13,7 @@ public:
 	void lighten(int average, float factor);
 	void lighten(float factor);
 	void invert();
-	void shrink(int factor);
+	void shrink(float factor);
 	void mirror(char Mirror_input);
 	void flip(char Flip_Image_Input);
 	void crop(int x, int y, int w, int l);
@@ -109,14 +109,18 @@ void Image::invert()
 }
 
 //Shrink image:
-void Image::shrink(int factor)
+void Image::shrink(float factor)
 {
+	float scalerMatrix[2][2] = { { 1.0 / factor,0},
+				{0,1.0 / factor} };
+	trasform(scalerMatrix);
+	return;
 	// Draw shrunk image on top left corner
 	for (int i = 0; i * factor < SIZE; i++)
 	{
 		for (int j = 0; j * factor < SIZE; j++)
 		{
-			image[i][j] = image[i * factor][j * factor];
+			image[i][j] = image[(int)(i * factor)][(int)(j * factor)];
 		}
 	}
 
