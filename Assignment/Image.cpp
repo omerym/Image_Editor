@@ -137,7 +137,7 @@ void Image::mirror(char Mirror_input)
 		{
 			for (int j = 0; j < SIZE; j++)
 			{
-				image[i][j] = image[i][SIZE - j];
+				image[i][j] = image[i][SIZE - j - 1];
 			}
 		}
 		break;
@@ -146,7 +146,7 @@ void Image::mirror(char Mirror_input)
 		{
 			for (int j = 0; j < SIZE; j++)
 			{
-				image[i][j] = image[SIZE - i][j];
+				image[i][j] = image[SIZE - i - 1][j];
 			}
 		}
 		break;
@@ -155,7 +155,7 @@ void Image::mirror(char Mirror_input)
 		{
 			for (int j = 0; j < SIZE; j++)
 			{
-				image[i][SIZE - j] = image[i][j];
+				image[i][SIZE - j - 1] = image[i][j];
 			}
 		}
 		break;
@@ -164,7 +164,7 @@ void Image::mirror(char Mirror_input)
 		{
 			for (int j = 0; j < SIZE; j++)
 			{
-				image[SIZE - i][j] = image[i][j];
+				image[SIZE - i - 1][j] = image[i][j];
 			}
 		}
 		break;
