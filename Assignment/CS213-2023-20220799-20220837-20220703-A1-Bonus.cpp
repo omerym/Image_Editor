@@ -32,6 +32,7 @@ void lighten(float factor);
 void invert();
 void rotate(float degree);
 void enlarge(int quarter);
+void shrink(int factor);
 void crop(int x,int y, int w, int l);
 void flip(char Flip_Image_Input);
 void Shuffle_Image(int input[4]);
@@ -123,6 +124,7 @@ int main()
 			cout << "Enter shrink factor.(2,3,4...):  ";
 			int factor;
 			cin >> factor;
+			shrink(factor);
 			break;
 		}
 		case 'a':
@@ -446,6 +448,17 @@ void enlarge(int quarter) {
 	for (int c = 0; c < RGB; c++)
 	{
 		t[c].enlarge(quarter);
+	}
+	fromGSArray(t);
+}
+
+void shrink(int factor)
+{
+	Image t[RGB];
+	toGSArray(t);
+	for (int c = 0; c < RGB; c++)
+	{
+		t[c].shrink(factor);
 	}
 	fromGSArray(t);
 }
