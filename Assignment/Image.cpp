@@ -555,7 +555,6 @@ int Vertical,Vertical_Start,Horizontal,Horizontal_Start;
  int LoopStartV=0;
  int Half=SIZE/2;
  unsigned char image2[SIZE][SIZE];
- cout<<"please enter the order of quarters";
  for(int i =0;i<4;i++)
  {
 	switch(i)
@@ -599,7 +598,7 @@ int Vertical,Vertical_Start,Horizontal,Horizontal_Start;
 	for(int j=0;j<Half;j++)
 		{
 			for(int k=0;k<Half;k++){
-				image2[LoopStartH+j][LoopStartV+k]=image[Horizontal_Start+j][Vertical_Start+k];
+				image2[LoopStartV+k][LoopStartH + j] =image[Vertical_Start+k][Horizontal_Start + j];
 			}
 		}
  }
