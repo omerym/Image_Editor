@@ -31,7 +31,7 @@ void skewRight(float deg);
 void lighten(float factor);
 void invert();
 void rotate(float degree);
-void enlarge();
+void enlarge(int quarter);
 void crop(int x,int y, int w, int l);
 void flip(char Flip_Image_Input);
 void Shuffle_Image(int input[4]);
@@ -77,7 +77,7 @@ int main()
 			toBlackWhite();
 			break;
 		case '2':
-		    invert();
+			invert();
 			break;
 		case '3':
 			unsigned char other[SIZE][SIZE][RGB];
@@ -85,7 +85,7 @@ int main()
 			merge(other);
 			break;
 		case '4':
-			cout<<"Flip (h)orizontally or (v)ertically ?\n";
+			cout << "Flip (h)orizontally or (v)ertically ?\n";
 			char Flip_Image_Input;
 			cin >> Flip_Image_Input;
 			flip(Flip_Image_Input);
@@ -111,7 +111,12 @@ int main()
 			detectEdges();
 			break;
 		case '8':
-			enlarge();
+		{
+			cout << "please enter quarter to enlarge\n";
+			int quarter;
+			cin >> quarter;
+			enlarge(quarter);
+		}
 			break;
 		case '9':
 		{
@@ -121,7 +126,7 @@ int main()
 			break;
 		}
 		case 'a':
-			cout<<"Mirror (l)eft, (r)ight, (u)pper, (d)own side: ";
+			cout << "Mirror (l)eft, (r)ight, (u)pper, (d)own side: ";
 			char Mirror_input;
 			cin >> Mirror_input;
 			mirror(Mirror_input);
@@ -129,10 +134,10 @@ int main()
 		case 'b':
 			cout << "please enter the order of quarters\n";
 			int input[4];
-			for(int i =0;i<4;i++)
-				{
-					cin>>input[i];
-				}
+			for (int i = 0; i < 4; i++)
+			{
+				cin >> input[i];
+			}
 			Shuffle_Image(input);
 			break;
 		case 'c':
@@ -145,7 +150,7 @@ int main()
 			cin >> x >> y;
 			cout << "Please enter crop dimensions (w,l)";
 			cin >> w >> l;
-			crop(x,y,w,l);
+			crop(x, y, w, l);
 			break;
 		}
 		case 'e':
@@ -167,11 +172,13 @@ int main()
 		case 's':
 			save(image);
 			break;
-		// if operation code does not match any defined operation 
+			// if operation code does not match any defined operation 
 		default:
 			cout << "Invalid input!\n";
 			break;
 		}
+
+		cout << "\n\n";
 	}
 	return 0;
 }
@@ -433,12 +440,12 @@ void rotate(float degree)
 	}
 	fromGSArray(t);
 }
-void enlarge(){
+void enlarge(int quarter) {
 	Image t[RGB];
 	toGSArray(t);
-	for(int c =0;c<RGB;c++)
-		{
-			t[c].enlarge();
-		}
+	for (int c = 0; c < RGB; c++)
+	{
+		t[c].enlarge(quarter);
+	}
 	fromGSArray(t);
 }

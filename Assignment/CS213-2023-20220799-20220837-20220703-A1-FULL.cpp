@@ -57,7 +57,6 @@ int main()
 			running = false;
 			break;
 		case '1':
-			cout << "Black and White filter applied\n";
 			image.toBlackWhite();
 			break;
 		case '2':
@@ -92,13 +91,13 @@ int main()
 			break;
 		}
 		case '7':
-			cout << "Appling Detect Image Edges\n";
 			image.detectEdges();
-			cout << "Detect Image Edges applied\n";
 			break;
 		case '8':
-			image.enlarge();
-			cout << "Filter Applied\n";
+			cout << "please enter quarter to enlarge\n";
+			int quarter;
+			cin >> quarter;
+			image.enlarge(quarter);
 			break;
 		case '9':
 		{
@@ -161,6 +160,7 @@ int main()
 			cout << "Invalid input!\n";
 			break;
 		}
+		cout << "\n\n";
 	}
 	return 0;
 }

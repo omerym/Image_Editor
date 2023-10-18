@@ -27,7 +27,7 @@ public:
 	void rotate(float degree);
 	void blur(int s = 1);
 	void applyKernal(float kernal[3][3]);
-	void enlarge();
+	void enlarge(int quarter);
 	int getAvarage();
 	void skewUp(float degree);
 	void skewRight(float degree);
@@ -364,112 +364,28 @@ unsigned char Image::getPixelSafe(int i, int j)
 	j = j < SIZE ? j : SIZE - 1;
 	return image[i][j];
 }
-void Image::enlarge() {
-	int image2[SIZE][SIZE];
-	int N = SIZE / 2;
-	char input;
-	cout << "please enter quarter to enlarge\n";
-	cin >> input;
-	switch (input)
+void Image::enlarge(int quarter) {
+	if (quarter < 1 || quarter > 4)
 	{
-	case'1':
-		for (int i = 0; i < N; i++)
+		cout << "Invalid Quarter!";
+		return;
+	}
+	quarter--;
+	const int HALF = SIZE / 2;
+	unsigned char imageQuarter[HALF][HALF];
+	for (int i = 0; i < HALF; i++)
+	{
+		for (int j = 0; j < HALF; j++)
 		{
-			for (int j = 0; j < N; j++)
-			{
-				image2[i][j] = image[i][j];
-			}
+			imageQuarter[i][j] = image[i + (quarter / 2 * HALF)][j + ((quarter % 2) * HALF)];
 		}
-		for (int i = 0; i <= SIZE / 2; i++)
+	}
+	for (int i = 0; i < SIZE; i++)
+	{
+		for (int j = 0; j < SIZE; j++)
 		{
-			for (int j = 0; j <= SIZE / 2; j++)
-			{
-				int i2 = i * 2;
-				int j2 = j * 2;
-				image[i2][j2] = image2[i][j];
-
-				image[i2 + 1][j2] = image2[i][j];
-
-				image[i2][j2 + 1] = image2[i][j];
-
-				image[i2 + 1][j2 + 1] = image2[i][j];
-			}
+			image[i][j] = imageQuarter[i / 2][j / 2];
 		}
-		break;
-	case '2':
-		for (int i = 0; i < SIZE; i++) {
-			for (int j = 0; j < N; j++) {
-
-				image2[i][j] = image[i][j + N];
-			}
-		}
-		for (int i = 0; i <= SIZE / 2; i++)
-		{
-			for (int j = 0; j <= SIZE / 2; j++)
-			{
-				int i2 = i * 2;
-				int j2 = j * 2;
-				image[i2][j2] = image2[i][j];
-
-				image[i2 + 1][j2] = image2[i][j];
-
-				image[i2][j2 + 1] = image2[i][j];
-
-				image[i2 + 1][j2 + 1] = image2[i][j];
-			}
-		}
-		break;
-	case '3':
-		for (int i = 0; i < N; i++)
-		{
-			for (int j = 0; j < SIZE; j++)
-			{
-				image2[i][j] = image[i + N][j];
-			}
-		}
-		for (int i = 0; i <= SIZE / 2; i++)
-		{
-			for (int j = 0; j <= SIZE / 2; j++)
-			{
-				int i2 = i * 2;
-				int j2 = j * 2;
-				image[i2][j2] = image2[i][j];
-
-				image[i2 + 1][j2] = image2[i][j];
-
-				image[i2][j2 + 1] = image2[i][j];
-
-				image[i2 + 1][j2 + 1] = image2[i][j];
-			}
-		}
-		break;
-	case '4':
-		for (int i = 0; i < SIZE; i++) {
-
-			for (int j = 0; j < SIZE; j++)
-			{
-				image2[i][j] = image[i + N][j + N];
-			}
-		}
-		for (int i = 0; i <= SIZE / 2; i++) {
-
-			for (int j = 0; j <= SIZE / 2; j++)
-			{
-				int i2 = i * 2;
-				int j2 = j * 2;
-				image[i2][j2] = image2[i][j];
-
-				image[i2 + 1][j2] = image2[i][j];
-
-				image[i2][j2 + 1] = image2[i][j];
-
-				image[i2 + 1][j2 + 1] = image2[i][j];
-			}
-		}
-		break;
-	default:
-		cout << "invalid input\n";
-		break;
 	}
 }
 
