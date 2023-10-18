@@ -21,8 +21,8 @@ public:
 	void toBlackWhite(bool inverted = false);
 	void getSobelX(int result[SIZE][SIZE]);
 	void getSobelY(int result[SIZE][SIZE]);
-	void getSobelX(int *result);
-	void getSobelY(int *result);
+	void getSobelX(int* result);
+	void getSobelY(int* result);
 	void detectEdges();
 	void rotate(float degree);
 	void blur(int s = 1);
