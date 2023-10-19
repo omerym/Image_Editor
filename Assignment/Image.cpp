@@ -116,7 +116,29 @@ void Image::shrink(float factor)
 	float scalerMatrix[2][2] = { { 1.0 / factor,0},
 				{0,1.0 / factor} };
 	trasform(scalerMatrix);
+	return;
+	// Draw shrunk image on top left corner
+	for (int i = 0; i * factor < SIZE; i++)
+	{
+		for (int j = 0; j * factor < SIZE; j++)
+		{
+			image[i][j] = image[(int)(i * factor)][(int)(j * factor)];
+		}
+	}
+
+	// Set pixeles outside image boundries to white.
+	for (int i = 0; i < SIZE; i++)
+	{
+		for (int j = 0; j < SIZE; j++)
+		{
+			if (i * factor >= SIZE || j * factor >= SIZE)
+			{
+				image[i][j] = 255;
+			}
+		}
+	}
 }
+//mirrors a half of the image into the other side
 void Image::mirror(char Mirror_input)
 {
 	switch (Mirror_input) {
@@ -158,6 +180,7 @@ void Image::mirror(char Mirror_input)
 		break;
 	}
 }
+//flips the image either vertically or horizontally by building it in reverse
 void Image::flip(char Flip_Image_Input) {
 	;
 	unsigned char image2[SIZE][SIZE];
@@ -494,13 +517,16 @@ void Image::trasform(float transformation[2][2], int centreX, int centreY)
 	// copy the transfotmed image back
 	copyFrom(t);
 }
+//lets user select order to place quarters in
 void Image::Shuffle_Image(int input [4])
 {
+//starting values
 int Vertical,Vertical_Start,Horizontal,Horizontal_Start;
  int LoopStartH=0;
  int LoopStartV=0;
  int Half=SIZE/2;
  unsigned char image2[SIZE][SIZE];
+//loops four times while setting the quarter to place in
  for(int i =0;i<4;i++)
  {
 	switch(i)
@@ -522,6 +548,7 @@ int Vertical,Vertical_Start,Horizontal,Horizontal_Start;
 		LoopStartV=Half;
 		 break;
 	}
+	//select which quarter user wants to copy
 	switch(input[i])
 	{
 		case 1:
