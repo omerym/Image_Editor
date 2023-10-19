@@ -1,3 +1,5 @@
+#ifndef IMAGE
+#define IMAGE
 #include <iostream>
 #include "bmplib.cpp"
 using namespace std;
@@ -548,3 +550,5 @@ int Vertical,Vertical_Start,Horizontal,Horizontal_Start;
  }
  copyFrom(image2);
 }
+
+#endif // !Image.cpp
