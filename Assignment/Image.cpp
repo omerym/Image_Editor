@@ -512,7 +512,7 @@ void Image::trasform(float transformation[2][2], int centreX, int centreY)
 			}
 		}
 	}
-	// copy the transfotmed image back
+	//copy the trasfomerd image back
 	copyFrom(t);
 }
 //lets user select order to place quarters in
